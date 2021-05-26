@@ -1,4 +1,5 @@
-from grille import Grid
+from model.gridfactory import GridFactory
 
-grid = Grid("kakuro.facile.txt")
-grid.grid_maker()
+gridmaker = GridFactory()
+grid = gridmaker.loadGrid("templates/test1")
+grid.displayGrid()
