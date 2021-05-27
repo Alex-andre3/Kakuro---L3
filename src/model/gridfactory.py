@@ -8,12 +8,12 @@ class GridFactory:
         pass
 
     def loadGrid(self, gridName):
-        if not os.path.isfile(gridName + '.grid'):
+        if not os.path.isfile(gridName):
             print('No such grid, empty grid created instead')
         else:
             cellsArray = []
             try:
-                with open(gridName + '.grid', "r") as f:
+                with open(gridName, "r") as f:
                     for line in f.read().splitlines():
                         cellsArray.append([])
                         for cell in line.split('_'):

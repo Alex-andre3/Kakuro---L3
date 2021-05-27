@@ -1,5 +1,7 @@
-from model.gridfactory import GridFactory
+import tkinter as tk
 
-gridmaker = GridFactory()
-grid = gridmaker.loadGrid("templates/test1")
-grid.displayGrid()
+from viewcontroller.mainwindow import *
+
+root = tk.Tk()
+app = MainWindow(master=root)
+app.mainloop()
