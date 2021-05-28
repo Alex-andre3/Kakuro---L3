@@ -19,7 +19,7 @@ class GridFactory:
                         for cell in line.split('_'):
                             if('/' in cell):
                                 sums = cell.split('/')
-                                cellsArray[-1].append(Cell(-1, sums[0], sums[1]))
+                                cellsArray[-1].append(Cell(-1, int(sums[0]), int(sums[1])))
                             else:
                                 cellsArray[-1].append(Cell(int(cell)))
                 return Grid(cellsArray)

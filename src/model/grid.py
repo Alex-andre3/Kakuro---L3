@@ -2,56 +2,53 @@ import model.cell
 
 class Grid:
     def __init__(self, grid=[]):
-        self.width = len(grid)
-        self.length = (len(grid[0]) if (grid != []) else 0)
+        self.height = len(grid)
+        self.width = (len(grid[0]) if (grid != []) else 0)
         self.grid = grid
 
     def checkCell(self, x, y):
-        invertY = len(self.grid) - y - 1
-        cell = self.grid[invertY][x]
+        cell = self.getCell(x, y)
         if(cell.value < 0):
             return (checkDownSum(x, y) and checkRightSum(x, y))
         else:
             return (cell.value != 0)
 
     def checkDownSum(self, x, y):
-        invertY = len(self.grid) - y - 1
-        cell = self.grid[invertY][x]
+        cell = self.getCell(x, y)
         if(cell.value < 0):
             sumDown = 0
             numbersDown = []
-            i = invertY+1
-            while(i < len(self.grid) and self.grid[i][x].value >= 0 and
-                not (self.grid[i][x].value in numbersDown)):
-                if(self.grid[i][x].value == 0):
+            i = y+1
+            while(i < self.height and self.getCell(x, i).value >= 0 and
+                not (self.getCell(x, i).value in numbersDown)):
+                if(self.getCell(x, i).value == 0):
                     return False
                 else:
-                    sumDown += self.grid[i][x].value
-                    numbersDown.append(self.grid[i][x].value)
+                    sumDown += self.getCell(x, i).value
+                    numbersDown.append(self.getCell(x, i).value)
                     i += 1
             return (sumDown == cell.sumDown)
 
     def checkRightSum(self, x, y):
-        invertY = len(self.grid) - y - 1
-        cell = self.grid[invertY][x]
+        cell = self.getCell(x, y)
         if(cell.value < 0):
             sumRight = 0
             numbersRight = []
             i = x+1
-            while(i < len(self.grid[invertY]) and self.grid[invertY][i].value >= 0 and
-                not (self.grid[invertY][i].value in numbersRight)):
-                if(self.grid[invertY][i].value == 0):
+            while(i < self.width and self.getCell(i, invertY).value >= 0 and
+                not (self.getCell(i, invertY).value in numbersRight)):
+                if(self.getCell(i, invertY).value == 0):
                     return False
                 else:
-                    sumRight += self.grid[invertY][i].value
-                    numbersRight.append(self.grid[invertY][i].value)
+                    sumRight += self.getCell(i, invertY).value
+                    numbersRight.append(self.getCell(i, invertY).value)
                     i += 1
             return (sumRight == cell.sumRight)
 
     def verifyGrid(self):
-        for y in range(len(self.grid)):
+        for y in range(self.height):
             print('\n', y)
-            for x in range(len(self.grid[0])):
+            for x in range(self.width):
                 print(x, end=' ')
                 if(not self.checkCell(x, y)):
                     return False
@@ -63,5 +60,7 @@ class Grid:
                 print(cell.value, end=" ")
             print("")
 
+    def getCell(self, x, y):
+        return self.grid[y][x]
 
 
