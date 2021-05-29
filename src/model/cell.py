@@ -8,7 +8,7 @@ class Cell:
         self.sumDown = sumDown
         self.sumRight = sumRight
 
-    def setValue(value):
-        if(self.value > 0):
+    def setValue(self, value):
+        if(self.value >= 0):
             if(value > 0):
                 self.value = value

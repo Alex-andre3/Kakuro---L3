@@ -38,5 +38,10 @@ class MainWindow(tk.Frame):
             self.grid = GridVC(self.gridLoader.loadGrid(gridName), self, confine=False) # creating the view of the returned grid
             self.grid.pack(side="bottom")
 
+
+    def reloadGrid(self):
+
+        self.grid.drawGrid()
+        self.grid.pack(side="bottom")
     # def loadGrid(self):
     #     pass

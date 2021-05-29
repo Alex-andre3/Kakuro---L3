@@ -8,14 +8,14 @@ class Grid:
 
     def checkCell(self, x, y):
         cell = self.getCell(x, y)
-        if(cell.value < 0):
-            return (checkDownSum(x, y) and checkRightSum(x, y))
+        if cell.value < 0 :
+            return (self.checkDownSum(x, y) and self.checkRightSum(x, y))
         else:
-            return (cell.value != 0)
+            return cell.value != 0
 
     def checkDownSum(self, x, y):
         cell = self.getCell(x, y)
-        if(cell.value < 0):
+        if cell.value < 0:
             sumDown = 0
             numbersDown = []
             i = y+1
@@ -27,11 +27,11 @@ class Grid:
                     sumDown += self.getCell(x, i).value
                     numbersDown.append(self.getCell(x, i).value)
                     i += 1
-            return (sumDown == cell.sumDown)
+            return sumDown == cell.sumDown
 
     def checkRightSum(self, x, y):
         cell = self.getCell(x, y)
-        if(cell.value < 0):
+        if cell.value < 0:
             sumRight = 0
             numbersRight = []
             i = x+1
@@ -43,7 +43,7 @@ class Grid:
                     sumRight += self.getCell(i, invertY).value
                     numbersRight.append(self.getCell(i, invertY).value)
                     i += 1
-            return (sumRight == cell.sumRight)
+            return sumRight == cell.sumRight
 
     def verifyGrid(self):
         for y in range(self.height):
@@ -63,4 +63,14 @@ class Grid:
     def getCell(self, x, y):
         return self.grid[y][x]
 
+    def getCellWithCoords(self, x, y):
+        try:
+            print(self.getCell((x//30), y//30).value)
+            return self.getCell((x//30), y//30)
+
+        except IndexError:
+            print("Oops! Vous avez appuyé en dehors du plateau de jeu !")
+
+    def updateCellValue(self, x, y, value):
+        self.getCell((x//30), y//30).setValue(value)
 

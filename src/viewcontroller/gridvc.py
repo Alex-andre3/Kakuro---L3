@@ -9,6 +9,7 @@ class GridVC(tk.Canvas):
         self.drawGrid()
 
     def drawGrid(self):
+
         w = self.grid.width
         h = self.grid.height
         cellSize = 30
@@ -19,6 +20,7 @@ class GridVC(tk.Canvas):
         for y in range(h):
             for x in range(w):
                 cell = self.grid.getCell(x, y)
+
                 if(cell.value < 0):
                     if(cell.sumDown <= 0 and cell.sumRight <= 0):
                         self.create_rectangle(x*cellSize, y*cellSize, (x+1)*cellSize, (y+1)*cellSize, fill="black")
@@ -38,10 +40,12 @@ class GridVC(tk.Canvas):
                                 ((x+1)*cellSize, y*cellSize),
                                 ((x+1)*cellSize, (y+1)*cellSize)], fill="black")
                         else:
+
                             quarter = cellSize/4
                             self.create_text((x+1)*cellSize-quarter, y*cellSize+quarter,
                                 text=cell.sumRight, tags=(x, y, "right"))
                 elif(cell.value != 0):
+
                     half = cellSize/2
                     self.create_text(x*cellSize + half, y*cellSize + half,
-                        tags=(x,y), text=cell.value)
+                        tags=(x, y), text=cell.value)
