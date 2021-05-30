@@ -41,7 +41,7 @@ class MainWindow(tk.Frame):
 
     def reloadGrid(self):
 
-        self.grid.drawGrid()
+        self.grid.reDrawGrid()
         self.grid.pack(side="bottom")
     # def loadGrid(self):
     #     pass

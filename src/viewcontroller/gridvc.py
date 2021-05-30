@@ -49,3 +49,8 @@ class GridVC(tk.Canvas):
                     half = cellSize/2
                     self.create_text(x*cellSize + half, y*cellSize + half,
                         tags=(x, y), text=cell.value)
+
+    def reDrawGrid(self):
+        # pour eviter d'interposer les chiffres, on nettoie le canvas et le redessine
+        self.delete("all")
+        self.drawGrid()
