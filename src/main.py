@@ -6,7 +6,9 @@ from events.event import Event
 def saveCoordonate(event):
     try:
         app.grid.grid.getCellWithCoords(event.x, event.y)
-        theEvent.set_coord([event.x, event.y])
+
+        if event.y // 30 < app.grid.grid.height - 1 and event.x // 30 < app.grid.grid.width - 1:
+            theEvent.set_coord([event.x, event.y])
 
     except AttributeError:
         pass
