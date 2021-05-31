@@ -1,3 +1,4 @@
+import tkinter
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
@@ -26,6 +27,14 @@ class MainWindow(tk.Frame):
                                         command=self.master.destroy)
         self.quit.pack(side="bottom")
 
+
+        # checkValue = tkinter.BooleanVar()
+        # self.CheckButton1 = tk.Checkbutton(self, variable=checkValue, text="Activate possible combinations", command=self.isChecked(checkValue))
+        # self.CheckButton1.pack(side="right")
+
+        # self.CheckButton2 = tk.Checkbutton(self, text="Activate Heatmap")
+        # self.CheckButton2.pack(side="right")
+
     def loadCustomGrid(self):
         if(self.grid != None):
             if(messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):
@@ -43,5 +52,9 @@ class MainWindow(tk.Frame):
 
         self.grid.reDrawGrid()
         self.grid.pack(side="bottom")
+
+    def ColorSelectedCell(self, x, y):
+
+        self.grid.SelectedCell(x, y)
     # def loadGrid(self):
     #     pass

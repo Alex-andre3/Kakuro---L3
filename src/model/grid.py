@@ -65,7 +65,7 @@ class Grid:
 
     def getCellWithCoords(self, x, y):
         try:
-            print(self.getCell((x//30), y//30).value)
+            print("Valeur de la case: ", self.getCell((x//30), y//30).value)
             return self.getCell((x//30), y//30)
 
         except IndexError:

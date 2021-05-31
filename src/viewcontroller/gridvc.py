@@ -48,9 +48,20 @@ class GridVC(tk.Canvas):
 
                     half = cellSize/2
                     self.create_text(x*cellSize + half, y*cellSize + half,
-                        tags=(x, y), text=cell.value)
+                        tags=(x, y), text=cell.value, activefill="red")
 
     def reDrawGrid(self):
         # pour eviter d'interposer les chiffres, on nettoie le canvas et le redessine
         self.delete("all")
         self.drawGrid()
+
+    def SelectedCell(self, x, y):
+        x, y = x//30, y//30
+        cell = self.grid.getCell(x, y)
+        cellSize = 30
+        half = cellSize / 2
+        self.create_rectangle(x*cellSize, y*cellSize, (x+1)*cellSize, (y+1)*cellSize, fill="yellow")
+
+        if cell.value != 0 : self.create_text(x * cellSize + half, y * cellSize + half,
+                         tags=(x, y), text=cell.value, activefill="red")
+
