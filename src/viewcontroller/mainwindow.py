@@ -15,17 +15,21 @@ class MainWindow(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.loadCustomGridButton = tk.Button(self, text="Load a custom grid",
+        buttons = tk.Frame(self)
+
+        self.loadCustomGridButton = tk.Button(buttons, text="Load a custom grid",
                                         command=self.loadCustomGrid)
-        self.loadCustomGridButton.pack(side="top")
+        self.loadCustomGridButton.pack(side="left")
 
         # self.loadGridButton = tk.Button(self, text="Load a grid",
         #                                 command=self.loadGrid)
         # self.loadGridButton.pack(side="top")
 
-        self.quit = tk.Button(self, text="QUIT", fg="red", 
+        self.quit = tk.Button(buttons, text="QUIT", fg="red", 
                                         command=self.master.destroy)
-        self.quit.pack(side="bottom")
+        self.quit.pack(side="right")
+
+        buttons.pack(side="top")
 
 
         # checkValue = tkinter.BooleanVar()
@@ -44,8 +48,8 @@ class MainWindow(tk.Frame):
         gridName = filedialog.askopenfilename(parent=self)
         if(gridName != None):
             print(gridName)
-            self.grid = GridVC(self.gridLoader.loadGrid(gridName), self, confine=False) # creating the view of the returned grid
-            self.grid.pack(side="bottom")
+            self.grid = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
+            self.grid.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
 
 
     def reloadGrid(self):
