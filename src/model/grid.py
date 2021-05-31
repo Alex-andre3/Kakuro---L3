@@ -54,23 +54,13 @@ class Grid:
                     return False
         return True
 
-    def displayGrid(self):
-        for line in self.grid:
-            for cell in line:
-                print(cell.value, end=" ")
-            print("")
-
     def getCell(self, x, y):
         return self.grid[y][x]
 
-    def getCellWithCoords(self, x, y):
-        try:
-            print("Valeur de la case: ", self.getCell((x//30), y//30).value)
-            return self.getCell((x//30), y//30)
-
-        except IndexError:
-            print("Oops! Vous avez appuyé en dehors du plateau de jeu !")
-
-    def updateCellValue(self, x, y, value):
-        self.getCell((x//30), y//30).setValue(value)
+    # --- debugging ---
+    # def displayGrid(self):
+    #     for line in self.grid:
+    #         for cell in line:
+    #             print(cell.value, end=" ")
+    #         print("")
 

@@ -11,6 +11,7 @@ class MainWindow(tk.Frame):
         self.gridLoader = GridFactory()
         self.grid = None
         self.master = master
+        self.theEvent = Event()
         self.pack()
         self.create_widgets()
 
@@ -52,13 +53,13 @@ class MainWindow(tk.Frame):
             self.grid.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
 
 
-    def reloadGrid(self):
+    # def reloadGrid(self):
 
-        self.grid.reDrawGrid()
-        self.grid.pack(side="bottom")
+    #     self.grid.reDrawGrid()
+    #     self.grid.pack(side="bottom")
 
-    def ColorSelectedCell(self, x, y):
+    # def ColorSelectedCell(self, x, y):
 
-        self.grid.SelectedCell(x, y)
+    #     self.grid.SelectedCell(x, y)
     # def loadGrid(self):
     #     pass

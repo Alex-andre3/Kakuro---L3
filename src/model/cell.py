@@ -10,5 +10,5 @@ class Cell:
 
     def setValue(self, value):
         if(self.value >= 0):
-            if(value > 0):
+            if(value >= 0):
                 self.value = value

@@ -1,42 +1,9 @@
 import tkinter as tk
 
 from viewcontroller.mainwindow import *
-from events.event import Event
-
-def saveCoordonate(event):
-    try:
-        # app.grid.grid.getCellWithCoords(event.x, event.y)
-
-        if event.y // 30 < app.grid.grid.height and event.x // 30 < app.grid.grid.width\
-                                                and app.grid.grid.getCellWithCoords(event.x, event.y).value != -1:
-
-            theEvent.set_coord([event.x, event.y])
-            x, y = theEvent.get_coord()
-            app.reloadGrid()
-            app.ColorSelectedCell(x, y)
-
-    except AttributeError:
-        pass
-
-def setNumber(event):
-    try:
-        x, y = theEvent.get_coord()
-        app.grid.grid.updateCellValue(x, y, int(event.keysym))
-        app.reloadGrid()
-        app.ColorSelectedCell(x, y)
-
-    except ValueError:
-        print("Erreur, il faut rentrer un chiffre.")
-
-
-theEvent = Event()
 
 root = tk.Tk()
 app = MainWindow(master=root)
-
-root.bind('<Button-1>', saveCoordonate)
-root.bind('<KeyPress>', setNumber)
-#root.winfo_pointerxy()
 
 app.mainloop()
 
