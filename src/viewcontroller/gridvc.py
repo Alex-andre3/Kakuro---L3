@@ -87,7 +87,7 @@ class GridVC(tk.Frame):
 
     def getCellWithCoords(self, x, y):
         try:
-            print("Valeur de la case: ", self.modelGrid.getCell((x//self.cellSize), y//self.cellSize).value)
+            # print("Valeur de la case: ", self.modelGrid.getCell((x//self.cellSize), y//self.cellSize).value)
             return self.modelGrid.getCell((x//self.cellSize), y//self.cellSize)
 
         except IndexError:
@@ -100,15 +100,19 @@ class GridVC(tk.Frame):
     # --- events callbacks ---
 
     def saveCoordonate(self, event):
-        print("save")
+        xScroll = self.canvas.xview()
+        a = xScroll[0]  # seul la position minimal du scroller nous interesse
+        dim = self.canvas.bbox("all")
+        xValueWithScrollBar = int(dim[2]*a + event.x)
+
+        yScroll = self.canvas.yview()
+        b = yScroll[0]
+        yValueWithScrollBar = int(dim[3]*b + event.y)
+
         try:
-            # self.grid.getCellWithCoords(event.x, event.y)
+            if self.getCellWithCoords(xValueWithScrollBar, yValueWithScrollBar).value != None and self.getCellWithCoords(xValueWithScrollBar, yValueWithScrollBar).value != -1:
 
-            # if event.y // 30 < self.grid.grid.height and event.x // 30 < self.grid.grid.width\
-                                                    # and self.grid.getCellWithCoords(event.x, event.y).value != -1:
-            if self.getCellWithCoords(event.x, event.y).value != None and self.getCellWithCoords(event.x, event.y).value != -1:
-
-                self.theEvent.set_coord([event.x, event.y])
+                self.theEvent.set_coord([xValueWithScrollBar, yValueWithScrollBar])
                 x, y = self.theEvent.get_coord()
                 self.reDrawGrid()
                 self.SelectedCell(x, y)
