@@ -103,7 +103,7 @@ class GridVC(tk.Frame):
             print("Valeur value: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).value)
             print("Valeur sumDown: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumDown)
             print("Valeur sumRight: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumRight)
-            # self.test2(x, y)
+            self.test2(x, y)
             return self.modelGrid.getCell((x // self.cellSize), y // self.cellSize)
 
         except IndexError:
@@ -135,10 +135,10 @@ class GridVC(tk.Frame):
                 self.reDrawGrid()
                 self.SelectedCell(x, y)
                 self.test(x, y)
-            else:
-                self.theEvent.set_coord([xValueWithScrollBar, yValueWithScrollBar])
-                x, y = self.theEvent.get_coord()
-                self.test2(x, y)
+            #else:
+                #self.theEvent.set_coord2([xValueWithScrollBar, yValueWithScrollBar])
+                #x, y = self.theEvent.get_coord2()
+                #self.test2(x, y)
 
 
         except AttributeError:
