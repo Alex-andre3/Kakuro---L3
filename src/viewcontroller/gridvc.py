@@ -2,6 +2,7 @@ import tkinter as tk
 
 from model.grid import *
 from events.event import *
+from solver.script_dictionary import creer_dictionnaire
 
 class GridVC(tk.Frame):
     def __init__(self, modelGrid, parent, **options):
@@ -9,6 +10,7 @@ class GridVC(tk.Frame):
         self.modelGrid = modelGrid
         self.canvas = tk.Canvas(self)
         self.theEvent = Event()
+        self.combinationPossible = creer_dictionnaire()
         self.cellSize = 30
         self.drawGrid()
         self.canvas.pack(side="left")
@@ -87,7 +89,9 @@ class GridVC(tk.Frame):
 
     def getCellWithCoords(self, x, y):
         try:
-            # print("Valeur de la case: ", self.modelGrid.getCell((x//self.cellSize), y//self.cellSize).value)
+            print("Valeur value: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).value)
+            print("Valeur sumDown: ", self.modelGrid.getCell((x//self.cellSize), y//self.cellSize).sumDown)
+            print("Valeur sumRight: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumRight)
             return self.modelGrid.getCell((x//self.cellSize), y//self.cellSize)
 
         except IndexError:
@@ -116,6 +120,7 @@ class GridVC(tk.Frame):
                 x, y = self.theEvent.get_coord()
                 self.reDrawGrid()
                 self.SelectedCell(x, y)
+                self.test(x,y)
 
         except AttributeError:
             print("error")
@@ -130,3 +135,44 @@ class GridVC(tk.Frame):
 
         except ValueError:
             print("Erreur, il faut rentrer un chiffre.")
+
+
+    def test(self, x, y):
+
+        x, y = x//self.cellSize, y//self.cellSize
+
+        cptx = 0
+        cpty = 0
+        lst = []
+
+        for i in range(x, -1, -1):
+            if self.modelGrid.getCell(i, y).value == -1:
+                if self.modelGrid.getCell(i, y).sumRight > 0:
+                    lst.append(self.modelGrid.getCell(i, y).sumRight)
+                    break
+            else:
+                cptx +=1
+
+        for i in range(x+1, 100):
+            if self.modelGrid.getCell(i, y).value == -1:
+                break
+            else:
+                cptx += 1
+
+        for i in range(y, -1, -1):
+            if self.modelGrid.getCell(x, i).value == -1:
+                if self.modelGrid.getCell(x, i).sumDown != None:
+                    lst.append(self.modelGrid.getCell(x, i).sumDown)
+                    break
+            else:
+                cpty += 1
+
+        for i in range(y+1, 100):
+            if self.modelGrid.getCell(x, i).value == -1:
+                break
+            else:
+                cpty += 1
+
+        print(cptx, cpty)
+        print(lst)
+        print("attention roulement de tambour")
