@@ -11,7 +11,6 @@ class MainWindow(tk.Frame):
         self.gridLoader = GridFactory()
         self.grid = None
         self.master = master
-        self.theEvent = Event()
         self.pack()
         self.create_widgets()
 

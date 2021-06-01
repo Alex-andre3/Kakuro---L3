@@ -8,6 +8,7 @@ class GridVC(tk.Frame):
         super().__init__(parent, **options)
         self.modelGrid = modelGrid
         self.canvas = tk.Canvas(self)
+        self.theEvent = Event()
         self.cellSize = 30
         self.drawGrid()
         self.canvas.pack(side="left")
@@ -24,8 +25,9 @@ class GridVC(tk.Frame):
         self.bind_keys()
 
     def bind_keys(self):
-        self.canvas.bind('<Button-1>', self.saveCoordonate)
-        self.canvas.bind('<KeyPress>', self.setNumber)
+        self.canvas.bind('<Button-1>', lambda event:self.saveCoordonate(event))
+        self._root().bind('<KeyPress>', lambda event:self.setNumber(event))
+        print("binded")
         #self.winfo_pointerxy()
 
     def drawGrid(self):
@@ -98,6 +100,7 @@ class GridVC(tk.Frame):
     # --- events callbacks ---
 
     def saveCoordonate(self, event):
+        print("save")
         try:
             # self.grid.getCellWithCoords(event.x, event.y)
 
@@ -111,9 +114,10 @@ class GridVC(tk.Frame):
                 self.SelectedCell(x, y)
 
         except AttributeError:
-            pass
+            print("error")
 
     def setNumber(self, event):
+        print("set")
         try:
             x, y = self.theEvent.get_coord()
             self.updateCellValue(x, y, int(event.keysym))
