@@ -28,6 +28,10 @@ class GridVC(tk.Frame):
 
         self.bind_keys()
 
+        self.var1 = tk.StringVar()
+        self.text_conseil = tk.Label(self, textvariable=self.var1)
+        self.text_conseil.pack(side="right")
+
     def bind_keys(self):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
         self._root().bind('<KeyPress>', lambda event: self.setNumber(event))
@@ -192,6 +196,7 @@ class GridVC(tk.Frame):
         print("attention roulement de tambour")
         print(lst[0], creer_dictionnaire()[lst[0]][cptx])
         print(lst[1], creer_dictionnaire()[lst[1]][cpty])
+        self.var1 = set("test")
 
         # print(x, "|", y)
 
@@ -218,10 +223,12 @@ class GridVC(tk.Frame):
                 else:
                     cpty += 1
 
-        if not lstr:
-            print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
+        if not lstr and not lstd:
+            print("case invalide")
         elif not lstd:
             print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
+        elif not lstr:
+            print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
         else:
             print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
             print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
