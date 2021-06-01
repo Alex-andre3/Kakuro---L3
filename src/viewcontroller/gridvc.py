@@ -159,7 +159,7 @@ class GridVC(tk.Frame):
         cpty = 0  # compteur des cases suivantes varticaux
         lst = []  # pour sauvgarder les chiffre initiaux
 
-        for i in range(x, -1, -1):
+        for i in range(x, -1, -1):  # pour détecter les cases vides à droite
             if self.modelGrid.getCell(i, y).value == -1:
                 if self.modelGrid.getCell(i, y).sumRight > 0:
                     lst.append(self.modelGrid.getCell(i, y).sumRight)
@@ -167,13 +167,13 @@ class GridVC(tk.Frame):
             else:
                 cptx += 1
 
-        for i in range(x + 1, self.modelGrid.width):
+        for i in range(x + 1, self.modelGrid.width):  # pour détecter les cases vides à gauche
             if self.modelGrid.getCell(i, y).value == -1:
                 break
             else:
                 cptx += 1
 
-        for i in range(y, -1, -1):
+        for i in range(y, -1, -1):  # pour détecter les cases vides en haut
             if self.modelGrid.getCell(x, i).value == -1:
                 if self.modelGrid.getCell(x, i).sumDown is not None:
                     lst.append(self.modelGrid.getCell(x, i).sumDown)
@@ -181,7 +181,7 @@ class GridVC(tk.Frame):
             else:
                 cpty += 1
 
-        for i in range(y + 1, self.modelGrid.height):
+        for i in range(y + 1, self.modelGrid.height):  # pour détecter les cases vides en bas
             if self.modelGrid.getCell(x, i).value == -1:
                 break
             else:
