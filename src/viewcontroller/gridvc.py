@@ -99,7 +99,7 @@ class GridVC(tk.Frame):
             print("Valeur value: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).value)
             print("Valeur sumDown: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumDown)
             print("Valeur sumRight: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumRight)
-            #self.test2(x, y)
+            # self.test2(x, y)
             return self.modelGrid.getCell((x // self.cellSize), y // self.cellSize)
 
         except IndexError:
@@ -123,8 +123,9 @@ class GridVC(tk.Frame):
 
         try:
             if self.getCellWithCoords(xValueWithScrollBar,
-                                      yValueWithScrollBar).value is not None and self.getCellWithCoords(xValueWithScrollBar,
-                                                                                                        yValueWithScrollBar).value != -1:
+                                      yValueWithScrollBar).value is not None and self.getCellWithCoords(
+                xValueWithScrollBar,
+                yValueWithScrollBar).value != -1:
                 self.theEvent.set_coord([xValueWithScrollBar, yValueWithScrollBar])
                 x, y = self.theEvent.get_coord()
                 self.reDrawGrid()
@@ -150,7 +151,7 @@ class GridVC(tk.Frame):
         except ValueError:
             print("Erreur, il faut rentrer un chiffre.")
 
-    def test(self, x, y):
+    def test(self, x, y):  # cliquer sur la case vide
 
         x, y = x // self.cellSize, y // self.cellSize
 
@@ -194,7 +195,7 @@ class GridVC(tk.Frame):
 
         # print(x, "|", y)
 
-    def test2(self, x, y):
+    def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
         x, y = x // self.cellSize, y // self.cellSize
         cptx = 0  # compteur des cases suivantes horizontaux
         cpty = 0  # compteur des cases suivantes varticaux
@@ -224,5 +225,3 @@ class GridVC(tk.Frame):
         else:
             print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
             print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
-
-
