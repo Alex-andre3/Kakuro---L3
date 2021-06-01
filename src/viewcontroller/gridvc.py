@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.font
 
 from model.grid import *
 from events.event import *
@@ -69,7 +70,7 @@ class GridVC(tk.Frame):
 
                     half = self.cellSize/2
                     self.canvas.create_text(x*self.cellSize + half, y*self.cellSize + half,
-                        tags=(x, y), text=cell.value, activefill="red")
+                        tags=(x, y), font=("", 18), text=cell.value, activefill="red")
 
     def reDrawGrid(self):
         # pour eviter d'interposer les chiffres, on nettoie le canvas et le redessine
@@ -83,7 +84,7 @@ class GridVC(tk.Frame):
         self.canvas.create_rectangle(x*self.cellSize, y*self.cellSize, (x+1)*self.cellSize, (y+1)*self.cellSize, fill="yellow")
 
         if cell.value != 0 : self.canvas.create_text(x * self.cellSize + half, y * self.cellSize + half,
-                         tags=(x, y), text=cell.value, activefill="red")
+                         tags=(x, y), font=("", 18), text=cell.value, activefill="red")
 
     def getCellWithCoords(self, x, y):
         try:
