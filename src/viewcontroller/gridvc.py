@@ -142,9 +142,9 @@ class GridVC(tk.Frame):
 
         x, y = x//self.cellSize, y//self.cellSize
 
-        cptx = 0
-        cpty = 0
-        lst = []
+        cptx = 0  #compteur des cases suivantes horizontaux
+        cpty = 0  #compteur des cases suivantes varticaux
+        lst = []  #pour sauvgarder les chiffre initiaux
 
         for i in range(x, -1, -1):
             if self.modelGrid.getCell(i, y).value == -1:
@@ -154,7 +154,7 @@ class GridVC(tk.Frame):
             else:
                 cptx +=1
 
-        for i in range(x+1, 100):
+        for i in range(x+1, self.modelGrid.width):
             if self.modelGrid.getCell(i, y).value == -1:
                 break
             else:
@@ -162,13 +162,13 @@ class GridVC(tk.Frame):
 
         for i in range(y, -1, -1):
             if self.modelGrid.getCell(x, i).value == -1:
-                if self.modelGrid.getCell(x, i).sumDown != None:
+                if self.modelGrid.getCell(x, i).sumDown is not None:
                     lst.append(self.modelGrid.getCell(x, i).sumDown)
                     break
             else:
                 cpty += 1
 
-        for i in range(y+1, 100):
+        for i in range(y+1, self.modelGrid.height):
             if self.modelGrid.getCell(x, i).value == -1:
                 break
             else:
@@ -177,3 +177,8 @@ class GridVC(tk.Frame):
         print(cptx, cpty)
         print(lst)
         print("attention roulement de tambour")
+        print(lst[0], creer_dictionnaire()[lst[0]][cptx])
+        print(lst[1], creer_dictionnaire()[lst[1]][cpty])
+
+        #print(x, "|", y)
+
