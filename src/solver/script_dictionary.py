@@ -13,7 +13,7 @@ def creer_dictionnaire():
                 nb_de_chiffres += 1
                 total_chiffres += chiffre_i
             chiffre_i += 1
-        if nb_de_chiffres >= 2:
+        if nb_de_chiffres >= 1:
             if total_chiffres in d:
                 if nb_de_chiffres in d[total_chiffres]:
                     d[total_chiffres][nb_de_chiffres].append(addition)
@@ -25,3 +25,6 @@ def creer_dictionnaire():
             #print(addition)
 
     return d
+
+
+print(creer_dictionnaire()[5][1])
