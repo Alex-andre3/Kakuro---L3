@@ -31,14 +31,24 @@ class MainWindow(tk.Frame):
 
         buttons.pack(side="top")
 
+        self.helpFrame = tk.Frame(self, bg="#b8b2a7", bd=5)
+        self.helpFrame.pack(side="bottom")
 
-        # checkValue = tkinter.BooleanVar()
-        # self.CheckButton1 = tk.Checkbutton(self, variable=checkValue, text="Activate possible combinations", command=self.isChecked(checkValue))
-        # self.CheckButton1.pack(side="right")
+        self.text = tk.Message(self.helpFrame, text="For Help you", width=200, bg="#b8b2a7").pack(side="top")
 
-        # self.CheckButton2 = tk.Checkbutton(self, text="Activate Heatmap")
-        # self.CheckButton2.pack(side="right")
+        self.state = tkinter.BooleanVar()
+        self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False, relief="ridge", text="Activate possible combinations", command=self.helpToCombinationPossibilities)
+        self.CheckButton1.pack(side="left")
 
+        self.state2 = tkinter.BooleanVar()
+        self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
+        self.CheckButton2.pack(side="right")
+
+    def helpToCombinationPossibilities(self):
+        self.grid.helpCombination = self.state.get()
+
+    def HelpHeatmap(self):
+        self.grid.heatmap = self.state2.get()
     def loadCustomGrid(self):
         if(self.grid != None):
             if(messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):

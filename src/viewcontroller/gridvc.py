@@ -14,6 +14,8 @@ class GridVC(tk.Frame):
         self.theEvent = Event()
         self.combinationPossible = creer_dictionnaire()
         self.cellSize = 30
+        self.helpCombination = False
+        self.heatmap = False
         self.drawGrid()
         self.canvas.pack(side="left")
 
@@ -200,16 +202,21 @@ class GridVC(tk.Frame):
             else:
                 cpty += 1
 
-        print(cptx, cpty)
-        print(lst)
-        print("attention roulement de tambour")
-        print(lst[0], creer_dictionnaire()[lst[0]][cptx])
-        print(lst[1], creer_dictionnaire()[lst[1]][cpty])
+        if self.helpCombination == True:
+            print(cptx, cpty)
+            print(lst)
+            print(lst[0], creer_dictionnaire()[lst[0]][cptx])
+            print(lst[1], creer_dictionnaire()[lst[1]][cpty])
+            self.varChiffre1.set(lst[0])
+            self.varChiffre2.set(lst[1])
+            self.varAddition1.set(creer_dictionnaire()[lst[0]][cptx])
+            self.varAddition2.set(creer_dictionnaire()[lst[1]][cpty])
 
-        self.varChiffre1.set(lst[0])
-        self.varChiffre2.set(lst[1])
-        self.varAddition1.set(creer_dictionnaire()[lst[0]][cptx])
-        self.varAddition2.set(creer_dictionnaire()[lst[1]][cpty])
+        else:
+            self.varChiffre1.set("")
+            self.varChiffre2.set("")
+            self.varAddition1.set("")
+            self.varAddition2.set("")
 
 
         # print(x, "|", y)
@@ -237,24 +244,32 @@ class GridVC(tk.Frame):
                 else:
                     cpty += 1
 
-        if not lstr and not lstd:
-            print("case invalide")
-        elif not lstd:
-            print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
-            self.varChiffre1.set(lstr[0])
-            self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
-            self.varChiffre2.set(0)
-            self.varAddition2.set(0)
-        elif not lstr:
-            print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
-            self.varChiffre2.set(lstd[0])
-            self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
-            self.varChiffre1.set(0)
-            self.varAddition1.set(0)
+        if self.helpCombination == True:
+
+            if not lstr and not lstd:
+                print("case invalide")
+            elif not lstd:
+                print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
+                self.varChiffre1.set(lstr[0])
+                self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
+                self.varChiffre2.set(0)
+                self.varAddition2.set(0)
+            elif not lstr:
+                print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
+                self.varChiffre2.set(lstd[0])
+                self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+                self.varChiffre1.set(0)
+                self.varAddition1.set(0)
+            else:
+                print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
+                print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
+                self.varChiffre1.set(lstr[0])
+                self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
+                self.varChiffre2.set(lstd[0])
+                self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+
         else:
-            print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
-            print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
-            self.varChiffre1.set(lstr[0])
-            self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
-            self.varChiffre2.set(lstd[0])
-            self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+            self.varChiffre1.set("")
+            self.varChiffre2.set("")
+            self.varAddition1.set("")
+            self.varAddition2.set("")
