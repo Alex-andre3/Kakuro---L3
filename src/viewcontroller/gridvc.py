@@ -28,9 +28,18 @@ class GridVC(tk.Frame):
 
         self.bind_keys()
 
-        self.var1 = tk.StringVar()
-        self.text_conseil = tk.Label(self, textvariable=self.var1)
-        self.text_conseil.pack(side="right")
+        self.varChiffre1 = tk.StringVar()
+        self.varChiffre2 = tk.StringVar()
+        self.varAddition1 = tk.StringVar()
+        self.varAddition2 = tk.StringVar()
+        self.text_conseil_Chiffre1 = tk.Label(self, textvariable=self.varChiffre1)
+        self.text_conseil_Chiffre2 = tk.Label(self, textvariable=self.varChiffre2)
+        self.text_conseil_Addition1 = tk.Label(self, textvariable=self.varAddition1)
+        self.text_conseil_Addition2 = tk.Label(self, textvariable=self.varAddition2)
+        self.text_conseil_Chiffre1.pack(side="top")
+        self.text_conseil_Chiffre2.pack(side="bottom")
+        self.text_conseil_Addition1.pack(side="top")
+        self.text_conseil_Addition2.pack(side="bottom")
 
     def bind_keys(self):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
@@ -196,16 +205,21 @@ class GridVC(tk.Frame):
         print("attention roulement de tambour")
         print(lst[0], creer_dictionnaire()[lst[0]][cptx])
         print(lst[1], creer_dictionnaire()[lst[1]][cpty])
-        self.var1 = set("test")
+
+        self.varChiffre1.set(lst[0])
+        self.varChiffre2.set(lst[1])
+        self.varAddition1.set(creer_dictionnaire()[lst[0]][cptx])
+        self.varAddition2.set(creer_dictionnaire()[lst[1]][cpty])
+
 
         # print(x, "|", y)
 
     def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
         x, y = x // self.cellSize, y // self.cellSize
-        cptx = 0  # compteur des cases suivantes horizontaux
-        cpty = 0  # compteur des cases suivantes varticaux
-        lstr = []  # pour sauvgarder les chiffre initiaux
-        lstd = []  # pour sauvgarder les chiffre initiaux
+        cptx = 0  # compteur des cases suivantes horizontales
+        cpty = 0  # compteur des cases suivantes varticales
+        lstr = []  # pour sauvgarder les chiffres initiaux
+        lstd = []  # pour sauvgarder les chiffres initiaux
 
         if self.modelGrid.getCell(x, y).value == -1 and self.modelGrid.getCell(x, y).sumRight > 0:
             lstr.append(self.modelGrid.getCell(x, y).sumRight)
@@ -227,8 +241,20 @@ class GridVC(tk.Frame):
             print("case invalide")
         elif not lstd:
             print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
+            self.varChiffre1.set(lstr[0])
+            self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
+            self.varChiffre2.set(0)
+            self.varAddition2.set(0)
         elif not lstr:
             print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
+            self.varChiffre2.set(lstd[0])
+            self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+            self.varChiffre1.set(0)
+            self.varAddition1.set(0)
         else:
             print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
             print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
+            self.varChiffre1.set(lstr[0])
+            self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
+            self.varChiffre2.set(lstd[0])
+            self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
