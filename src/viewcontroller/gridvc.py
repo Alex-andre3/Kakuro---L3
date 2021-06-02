@@ -16,6 +16,8 @@ class GridVC(tk.Frame):
         self.cellSize = 30
         self.helpCombination = False
         self.heatmap = False
+        self.helpResultFrame1 = parent.helpResultFrame1
+        self.helpResultFrame2 = parent.helpResultFrame2
         self.drawGrid()
         self.canvas.pack(side="left")
 
@@ -34,10 +36,10 @@ class GridVC(tk.Frame):
         self.varChiffre2 = tk.StringVar()
         self.varAddition1 = tk.StringVar()
         self.varAddition2 = tk.StringVar()
-        self.text_conseil_Chiffre1 = tk.Label(self, textvariable=self.varChiffre1)
-        self.text_conseil_Chiffre2 = tk.Label(self, textvariable=self.varChiffre2)
-        self.text_conseil_Addition1 = tk.Label(self, textvariable=self.varAddition1)
-        self.text_conseil_Addition2 = tk.Label(self, textvariable=self.varAddition2)
+        self.text_conseil_Chiffre1 = tk.Label(self.helpResultFrame1, textvariable=self.varChiffre1)
+        self.text_conseil_Chiffre2 = tk.Label(self.helpResultFrame2, textvariable=self.varChiffre2)
+        self.text_conseil_Addition1 = tk.Label(self.helpResultFrame1, textvariable=self.varAddition1)
+        self.text_conseil_Addition2 = tk.Label(self.helpResultFrame2, textvariable=self.varAddition2)
         self.text_conseil_Chiffre1.pack(side="top")
         self.text_conseil_Chiffre2.pack(side="bottom")
         self.text_conseil_Addition1.pack(side="top")
@@ -168,6 +170,7 @@ class GridVC(tk.Frame):
 
     def test(self, x, y):  # cliquer sur la case vide
 
+
         x, y = x // self.cellSize, y // self.cellSize
 
         cptx = 0  # compteur des cases suivantes horizontaux
@@ -203,10 +206,6 @@ class GridVC(tk.Frame):
                 cpty += 1
 
         if self.helpCombination == True:
-            print(cptx, cpty)
-            print(lst)
-            print(lst[0], creer_dictionnaire()[lst[0]][cptx])
-            print(lst[1], creer_dictionnaire()[lst[1]][cpty])
             self.varChiffre1.set(lst[0])
             self.varChiffre2.set(lst[1])
             self.varAddition1.set(creer_dictionnaire()[lst[0]][cptx])
@@ -222,29 +221,30 @@ class GridVC(tk.Frame):
         # print(x, "|", y)
 
     def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
-        x, y = x // self.cellSize, y // self.cellSize
-        cptx = 0  # compteur des cases suivantes horizontales
-        cpty = 0  # compteur des cases suivantes varticales
-        lstr = []  # pour sauvgarder les chiffres initiaux
-        lstd = []  # pour sauvgarder les chiffres initiaux
-
-        if self.modelGrid.getCell(x, y).value == -1 and self.modelGrid.getCell(x, y).sumRight > 0:
-            lstr.append(self.modelGrid.getCell(x, y).sumRight)
-            for i in range(x + 1, self.modelGrid.width):
-                if self.modelGrid.getCell(i, y).value == -1:
-                    break
-                else:
-                    cptx += 1
-
-        if self.modelGrid.getCell(x, y).value == -1 and self.modelGrid.getCell(x, y).sumDown > 0:
-            lstd.append(self.modelGrid.getCell(x, y).sumDown)
-            for i in range(y + 1, self.modelGrid.height):
-                if self.modelGrid.getCell(x, i).value == -1:
-                    break
-                else:
-                    cpty += 1
 
         if self.helpCombination == True:
+
+            x, y = x // self.cellSize, y // self.cellSize
+            cptx = 0  # compteur des cases suivantes horizontales
+            cpty = 0  # compteur des cases suivantes varticales
+            lstr = []  # pour sauvgarder les chiffres initiaux
+            lstd = []  # pour sauvgarder les chiffres initiaux
+
+            if self.modelGrid.getCell(x, y).value == -1 and self.modelGrid.getCell(x, y).sumRight > 0:
+                lstr.append(self.modelGrid.getCell(x, y).sumRight)
+                for i in range(x + 1, self.modelGrid.width):
+                    if self.modelGrid.getCell(i, y).value == -1:
+                        break
+                    else:
+                        cptx += 1
+
+            if self.modelGrid.getCell(x, y).value == -1 and self.modelGrid.getCell(x, y).sumDown > 0:
+                lstd.append(self.modelGrid.getCell(x, y).sumDown)
+                for i in range(y + 1, self.modelGrid.height):
+                    if self.modelGrid.getCell(x, i).value == -1:
+                        break
+                    else:
+                        cpty += 1
 
             if not lstr and not lstd:
                 print("case invalide")
