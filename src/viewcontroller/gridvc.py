@@ -101,6 +101,7 @@ class GridVC(tk.Frame):
         self.canvas.delete("all")
         self.drawGrid()
 
+
     def SelectedCell(self, xMouse, yMouse):
         x, y = xMouse // self.cellSize, yMouse // self.cellSize
         cell = self.modelGrid.getCell(x, y)
