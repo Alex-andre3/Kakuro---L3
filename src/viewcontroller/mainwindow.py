@@ -34,7 +34,7 @@ class MainWindow(tk.Frame):
         self.helpFrame = tk.Frame(self, bg="#b8b2a7", bd=5)
         self.helpFrame.pack(side="bottom")
 
-        self.text = tk.Message(self.helpFrame, text="For Help you", width=200, bg="#b8b2a7").pack(side="top")
+        self.text = tk.Message(self.helpFrame, text="To Help you", width=200, bg="#b8b2a7").pack(side="top")
 
         self.state = tkinter.BooleanVar()
         self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False, relief="ridge", text="Activate possible combinations", command=self.helpToCombinationPossibilities)
@@ -59,10 +59,13 @@ class MainWindow(tk.Frame):
 
 
     def helpToCombinationPossibilities(self):
-        self.grid.helpCombination = self.state.get()
+        if(self.grid != None):
+            self.grid.helpCombination = self.state.get()
 
     def HelpHeatmap(self):
-        self.grid.heatmap = self.state2.get()
+        if(self.grid != None):
+            self.grid.heatmap = self.state2.get()
+            self.grid.reDrawGrid()
 
     def loadCustomGrid(self):
         if(self.grid != None):
@@ -75,6 +78,10 @@ class MainWindow(tk.Frame):
             print(gridName)
             self.grid = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
             self.grid.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
+
+    def switchHeatMap(self):
+        if(self.grid != None):
+            self.grid.switchHeatMap()
 
 
     # def reloadGrid(self):
