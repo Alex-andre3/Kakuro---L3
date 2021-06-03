@@ -21,15 +21,16 @@ class GridVC(tk.Frame):
         self.helpResultFrame1 = parent.helpResultFrame1
         self.helpResultFrame2 = parent.helpResultFrame2
         self.drawGrid()
+
+        self.scroll_x = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
+        self.scroll_x.pack(side="bottom", fill="x")
+
         self.canvas.pack(side="left")
 
-        scroll_x = tk.Scrollbar(parent, orient="horizontal", command=self.canvas.xview)
-        scroll_x.pack(side="bottom", fill="x")
+        self.scroll_y = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scroll_y.pack(side="right", fill="y")
 
-        scroll_y = tk.Scrollbar(parent, orient="vertical", command=self.canvas.yview)
-        scroll_y.pack(side="right", fill="y")
-
-        self.canvas.configure(yscrollcommand=scroll_y.set, xscrollcommand=scroll_x.set)
+        self.canvas.configure(yscrollcommand=self.scroll_y.set, xscrollcommand=self.scroll_x.set)
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
         self.bind_keys()
@@ -51,6 +52,11 @@ class GridVC(tk.Frame):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
         self._root().bind('<KeyPress>', lambda event: self.setNumber(event))
         # print("binded")
+        # self.winfo_pointerxy()
+
+    def unbind_keys(self):
+        self.canvas.unbind('<Button-1>')
+        self._root().unbind('<KeyPress>') #dangerous, destroys every other binding
         # self.winfo_pointerxy()
 
     def drawGrid(self):

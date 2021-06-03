@@ -9,7 +9,7 @@ class MainWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.gridLoader = GridFactory()
-        self.grid = None
+        self.gridVC = None
         self.master = master
         self.pack()
         self.create_widgets()
@@ -59,38 +59,38 @@ class MainWindow(tk.Frame):
 
 
     def helpToCombinationPossibilities(self):
-        if(self.grid != None):
-            self.grid.helpCombination = self.state.get()
+        if(self.gridVC != None):
+            self.gridVC.helpCombination = self.state.get()
 
     def HelpHeatmap(self):
-        if(self.grid != None):
-            self.grid.heatmap = self.state2.get()
-            self.grid.reDrawGrid()
+        if(self.gridVC != None):
+            self.gridVC.heatmap = self.state2.get()
+            self.gridVC.reDrawGrid()
 
     def loadCustomGrid(self):
-        if(self.grid != None):
+        if(self.gridVC != None):
             if(messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):
-                self.grid.destroy()
+                self.gridVC.destroy()
             else:
                 return
         gridName = filedialog.askopenfilename(parent=self)
         if(gridName != None):
             print(gridName)
-            self.grid = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
-            self.grid.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
+            self.gridVC = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
+            self.gridVC.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
 
     def switchHeatMap(self):
-        if(self.grid != None):
-            self.grid.switchHeatMap()
+        if(self.gridVC != None):
+            self.gridVC.switchHeatMap()
 
 
     # def reloadGrid(self):
 
-    #     self.grid.reDrawGrid()
-    #     self.grid.pack(side="bottom")
+    #     self.gridVC.reDrawGrid()
+    #     self.gridVC.pack(side="bottom")
 
     # def ColorSelectedCell(self, x, y):
 
-    #     self.grid.SelectedCell(x, y)
+    #     self.gridVC.SelectedCell(x, y)
     # def loadGrid(self):
     #     pass
