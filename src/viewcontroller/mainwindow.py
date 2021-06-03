@@ -44,7 +44,7 @@ class MainWindow(tk.Frame):
         self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
         self.CheckButton2.pack(side="right")
 
-        self.helpResultFrame = tk.Frame(self, bg="#b8b2a7", bd=2)
+        self.helpResultFrame = tk.Frame(self, bd=2)
         #self.helpResultFrame.grid_propagate(0)
         self.helpResultFrame.pack(side="right")
 
@@ -67,9 +67,16 @@ class MainWindow(tk.Frame):
             self.gridVC.heatmap = self.state2.get()
             self.gridVC.reDrawGrid()
 
+    def clearHelpResultFrame1(self):
+        for widget in self.helpResultFrame1.winfo_children():
+            widget.destroy()
+        for widget in self.helpResultFrame2.winfo_children():
+            widget.destroy()
+
     def loadCustomGrid(self):
         if(self.gridVC != None):
             if(messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):
+                self.clearHelpResultFrame1()
                 self.gridVC.destroy()
             else:
                 return

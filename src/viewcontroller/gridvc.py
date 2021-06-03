@@ -182,9 +182,17 @@ class GridVC(tk.Frame):
             pass
             # print("Erreur, il faut rentrer un chiffre.")
 
+
+    def formattingResultsHelpCombination(self, liste):
+        chn = ""
+        for x in liste:
+            for i in x:
+                chn += str(i) + " "
+            chn += "\n"
+        chn += "\n"
+        return chn
+
     def test(self, x, y):  # cliquer sur la case vide
-
-
         x, y = x // self.cellSize, y // self.cellSize
 
         cptx = 0  # compteur des cases suivantes horizontaux
@@ -220,10 +228,10 @@ class GridVC(tk.Frame):
                 cpty += 1
 
         if self.helpCombination == True:
-            self.varChiffre1.set(lst[0])
-            self.varChiffre2.set(lst[1])
-            self.varAddition1.set(creer_dictionnaire()[lst[0]][cptx])
-            self.varAddition2.set(creer_dictionnaire()[lst[1]][cpty])
+            self.varChiffre1.set("Possibilities for : {}".format(lst[0]))
+            self.varChiffre2.set("Possibilities for : {}".format(lst[1]))
+            self.varAddition1.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[0]][cptx]))
+            self.varAddition2.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[1]][cpty]))
 
         else:
             self.varChiffre1.set("")
@@ -231,8 +239,6 @@ class GridVC(tk.Frame):
             self.varAddition1.set("")
             self.varAddition2.set("")
 
-
-        # print(x, "|", y)
 
     def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
 
@@ -263,24 +269,21 @@ class GridVC(tk.Frame):
             if not lstr and not lstd:
                 print("case invalide")
             elif not lstd:
-                print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
-                self.varChiffre1.set(lstr[0])
-                self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
+                self.varChiffre1.set("Possibilities for : {}".format(lstr[0]))
+                self.varAddition1.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lstr[0]][cptx]))
                 self.varChiffre2.set(0)
                 self.varAddition2.set(0)
+
             elif not lstr:
-                print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
-                self.varChiffre2.set(lstd[0])
-                self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+                self.varChiffre2.set("Possibilities for : {}".format(lstd[0]))
+                self.varAddition2.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lstd[0]][cpty]))
                 self.varChiffre1.set(0)
                 self.varAddition1.set(0)
             else:
-                print(lstd[0], creer_dictionnaire()[lstd[0]][cpty])
-                print(lstr[0], creer_dictionnaire()[lstr[0]][cptx])
-                self.varChiffre1.set(lstr[0])
-                self.varAddition1.set(creer_dictionnaire()[lstr[0]][cptx])
-                self.varChiffre2.set(lstd[0])
-                self.varAddition2.set(creer_dictionnaire()[lstd[0]][cpty])
+                self.varChiffre1.set("Possibilities for : {}".format(lstr[0]))
+                self.varAddition1.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lstr[0]][cptx]))
+                self.varChiffre2.set("Possibilities for : {}".format(lstd[0]))
+                self.varAddition2.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lstd[0]][cpty]))
 
         else:
             self.varChiffre1.set("")
