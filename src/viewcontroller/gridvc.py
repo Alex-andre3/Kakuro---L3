@@ -16,6 +16,7 @@ class GridVC(tk.Frame):
         self.combinationPossible = creer_dictionnaire()
         self.cellSize = 30
         self.helpCombination = False
+        self.helpValue = False
         self.helpHeatmap = False
         self.helpMemo = False
         self.helpResultFrame1 = parent.helpResultFrame1
@@ -280,12 +281,22 @@ class GridVC(tk.Frame):
             self.varChiffre2.set("Possibilities for : {}".format(lst[1]))
             self.varAddition1.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[0]][cptx]))
             self.varAddition2.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[1]][cpty]))
+
+
+        else:
+            self.varChiffre1.set("")
+            self.varChiffre2.set("")
+            self.varAddition1.set("")
+            self.varAddition2.set("")
+
+
+        if self.helpValue == True:
             if lst[0] - sommeh != 0 and lst[1] - sommev != 0 and self.modelGrid.getCell(x, y).value == 0:
                 try:
                     print("horizontal")
                     print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
-                    self.varPossible1.set("Possible values for this empty cell in this line : {}"
-                                          .format(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]))
+                    self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
+                                          .format("\n", self.formattingResultsHelpCombination(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])))
 
                 except:
                     print("il y a des erreurs dans cette ligne")
@@ -293,19 +304,15 @@ class GridVC(tk.Frame):
                 try:
                     print("vertical")
                     print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
-                    self.varPossible2.set("Possible values for this empty cell in this column : {}"
-                                          .format(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]))
+                    self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
+                                          .format("\n", self.formattingResultsHelpCombination(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])))
                 except:
                     print("il y a des erreurs dans cette colonne")
                     self.varPossible2.set("il y a des erreurs dans cette colonne")
-
         else:
-            self.varChiffre1.set("")
-            self.varChiffre2.set("")
-            self.varAddition1.set("")
-            self.varAddition2.set("")
             self.varPossible1.set("")
             self.varPossible2.set("")
+
 
 
     def algoHelperCominaison2(self, x, y):  # cliquer sur la case avec un ou deux chiffres

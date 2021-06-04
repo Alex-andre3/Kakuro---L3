@@ -40,6 +40,12 @@ class MainWindow(tk.Frame):
         self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False, relief="ridge", text="Activate possible combinations", command=self.helpToCombinationPossibilities)
         self.CheckButton1.pack(side="left")
 
+        self.state4 = tkinter.BooleanVar()
+        self.CheckButton4 = tk.Checkbutton(self.helpFrame, variable=self.state4, onvalue=True, offvalue=False,
+                                           relief="ridge", text="Activate possible values",
+                                           command=self.helpToValuesPossibilities)
+        self.CheckButton4.pack(side="left")
+
         self.state2 = tkinter.BooleanVar()
         self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
         self.CheckButton2.pack(side="right")
@@ -70,6 +76,10 @@ class MainWindow(tk.Frame):
     def helpToCombinationPossibilities(self):
         if(self.gridVC != None):
             self.gridVC.helpCombination = self.state.get()
+
+    def helpToValuesPossibilities(self):
+        if(self.gridVC != None):
+            self.gridVC.helpValue = self.state4.get()
 
     def HelpHeatmap(self):
         if(self.gridVC != None):
