@@ -7,8 +7,13 @@ class Cell:
         self.value = value
         self.sumDown = sumDown
         self.sumRight = sumRight
+        self.memoList = [False] * 9 # 9 values for 9 numbers
 
     def setValue(self, value):
         if(self.value >= 0):
             if(value >= 0):
                 self.value = value
+
+    def updateMemoList(self, value):
+        if self.value == 0:
+            self.memoList[value-1] = not self.memoList[value-1]

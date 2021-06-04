@@ -44,6 +44,11 @@ class MainWindow(tk.Frame):
         self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
         self.CheckButton2.pack(side="right")
 
+        self.state3 = tkinter.BooleanVar()
+        self.CheckButton3 = tk.Checkbutton(self.helpFrame, variable=self.state3, onvalue=True, offvalue=False,
+                                           relief="ridge", text="Activate Memo", command=self.HelpMemo)
+        self.CheckButton3.pack(side="right")
+
         self.helpResultFrame = tk.Frame(self, bd=2)
         #self.helpResultFrame.grid_propagate(0)
         self.helpResultFrame.pack(side="right")
@@ -56,6 +61,10 @@ class MainWindow(tk.Frame):
         #self.helpResultFrame2.grid_propagate(0)
         self.helpResultFrame2.pack(side="bottom")
 
+        self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
+        # self.helpResultFrame2.grid_propagate(0)
+        self.helpResultFrame3.pack(side="bottom")
+
 
 
     def helpToCombinationPossibilities(self):
@@ -65,6 +74,11 @@ class MainWindow(tk.Frame):
     def HelpHeatmap(self):
         if(self.gridVC != None):
             self.gridVC.heatmap = self.state2.get()
+            self.gridVC.reDrawGrid()
+
+    def HelpMemo(self):
+        if(self.gridVC != None):
+            self.gridVC.helpMemo = self.state3.get()
             self.gridVC.reDrawGrid()
 
     def clearHelpResultFrame1(self):

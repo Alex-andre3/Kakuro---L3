@@ -18,6 +18,7 @@ class GridVC(tk.Frame):
         self.cellSize = 30
         self.helpCombination = False
         self.heatmap = False
+        self.helpMemo = False
         self.helpResultFrame1 = parent.helpResultFrame1
         self.helpResultFrame2 = parent.helpResultFrame2
         self.drawGrid()
@@ -113,12 +114,20 @@ class GridVC(tk.Frame):
                         if(self.heatmap):
                             self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                     (y + 1) * self.cellSize, fill=heatColors[self.getCellHeat(x, y)-1])
+                        if self.helpMemo:
+                            third = self.cellSize / 3
+                            number = 1
+                            for booleanValue in cell.memoList:
+                                if booleanValue:
+                                    self.canvas.create_text(x * self.cellSize + third * ((number-1) % 3 + 0.5),
+                                                            y * self.cellSize + third * ((number-1) // 3 + 0.5),
+                                                            text=number, fill="gray")
+                                number += 1
 
     def reDrawGrid(self):
         # pour eviter d'interposer les chiffres, on nettoie le canvas et le redessine
         self.canvas.delete("all")
         self.drawGrid()
-
 
     def SelectedCell(self, xMouse, yMouse):
         x, y = xMouse // self.cellSize, yMouse // self.cellSize
@@ -129,6 +138,16 @@ class GridVC(tk.Frame):
 
         if cell.value != 0: self.canvas.create_text(x * self.cellSize + half, y * self.cellSize + half,
                                                     tags=(x, y), font=("", 18), text=cell.value, activefill="red")
+        else:
+            if self.helpMemo:
+                third = self.cellSize / 3
+                number = 1
+                for booleanValue in cell.memoList:
+                    if booleanValue:
+                        self.canvas.create_text(x * self.cellSize + third * ((number - 1) % 3 + 0.5),
+                                                y * self.cellSize + third * ((number - 1) // 3 + 0.5),
+                                                text=number, fill="gray")
+                    number += 1
 
     def getCellWithCoords(self, x, y):
         try:
@@ -143,7 +162,11 @@ class GridVC(tk.Frame):
             return None
 
     def updateCellValue(self, x, y, value):
-        self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).setValue(value)
+        cell = self.modelGrid.getCell((x // self.cellSize), y // self.cellSize)
+        if self.helpMemo:
+            cell.updateMemoList(value)
+        else:
+            cell.setValue(value)
 
     # --- events callbacks ---
 
