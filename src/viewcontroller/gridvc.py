@@ -21,7 +21,10 @@ class GridVC(tk.Frame):
         self.helpMemo = False
         self.helpResultFrame1 = parent.helpResultFrame1
         self.helpResultFrame2 = parent.helpResultFrame2
+        self.currentSelectedCell = None
         self.drawGrid()
+
+
 
         self.scroll_x = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
         self.scroll_x.pack(side="bottom", fill="x")
@@ -107,6 +110,11 @@ class GridVC(tk.Frame):
                                                     text=cell.sumRight, tags=(x, y, "right"))
                 else:
                     if(cell.value != 0):
+                        if self.currentSelectedCell is cell:
+                            self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
+                                                         (y + 1) * self.cellSize, fill="yellow")
+                            self.currentSelectedCell = None
+
                         half = self.cellSize / 2
                         self.canvas.create_text(x * self.cellSize + half, y * self.cellSize + half,
                                                 tags=(x, y), font=("", 18), text=cell.value, activefill="red")
@@ -114,6 +122,12 @@ class GridVC(tk.Frame):
                         if(self.heatmap):
                             self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                     (y + 1) * self.cellSize, fill=heatColors[self.getCellHeat(x, y)-1])
+
+                        if self.currentSelectedCell is cell:
+                            self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
+                                                         (y + 1) * self.cellSize, fill="yellow")
+                            self.currentSelectedCell = None
+
                         if self.helpMemo:
                             third = self.cellSize / 3
                             number = 1
@@ -132,22 +146,7 @@ class GridVC(tk.Frame):
     def SelectedCell(self, xMouse, yMouse):
         x, y = xMouse // self.cellSize, yMouse // self.cellSize
         cell = self.modelGrid.getCell(x, y)
-        half = self.cellSize / 2
-        self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
-                                     (y + 1) * self.cellSize, fill="yellow")
-
-        if cell.value != 0: self.canvas.create_text(x * self.cellSize + half, y * self.cellSize + half,
-                                                    tags=(x, y), font=("", 18), text=cell.value, activefill="red")
-        else:
-            if self.helpMemo:
-                third = self.cellSize / 3
-                number = 1
-                for booleanValue in cell.memoList:
-                    if booleanValue:
-                        self.canvas.create_text(x * self.cellSize + third * ((number - 1) % 3 + 0.5),
-                                                y * self.cellSize + third * ((number - 1) // 3 + 0.5),
-                                                text=number, fill="gray")
-                    number += 1
+        self.currentSelectedCell = cell
 
     def getCellWithCoords(self, x, y):
         try:
@@ -187,8 +186,8 @@ class GridVC(tk.Frame):
                 yValueWithScrollBar).value != -1:
                 self.theEvent.set_coord([xValueWithScrollBar, yValueWithScrollBar])
                 x, y = self.theEvent.get_coord()
-                self.reDrawGrid()
                 self.SelectedCell(x, y)
+                self.reDrawGrid()
                 self.test(x, y)
             #else:
                 #self.theEvent.set_coord2([xValueWithScrollBar, yValueWithScrollBar])
@@ -204,8 +203,8 @@ class GridVC(tk.Frame):
         try:
             x, y = self.theEvent.get_coord()
             self.updateCellValue(x, y, int(event.keysym))
-            self.reDrawGrid()
             self.SelectedCell(x, y)
+            self.reDrawGrid()
 
         except ValueError:
             pass
