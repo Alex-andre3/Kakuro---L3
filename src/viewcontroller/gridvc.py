@@ -39,14 +39,20 @@ class GridVC(tk.Frame):
         self.varChiffre2 = tk.StringVar()
         self.varAddition1 = tk.StringVar()
         self.varAddition2 = tk.StringVar()
+        self.varPossible1 = tk.StringVar()
+        self.varPossible2 = tk.StringVar()
         self.text_conseil_Chiffre1 = tk.Label(self.helpResultFrame1, textvariable=self.varChiffre1)
         self.text_conseil_Chiffre2 = tk.Label(self.helpResultFrame2, textvariable=self.varChiffre2)
         self.text_conseil_Addition1 = tk.Label(self.helpResultFrame1, textvariable=self.varAddition1)
         self.text_conseil_Addition2 = tk.Label(self.helpResultFrame2, textvariable=self.varAddition2)
+        self.text_conseil_Possible1 = tk.Label(self.helpResultFrame1, textvariable=self.varPossible1)
+        self.text_conseil_Possible2 = tk.Label(self.helpResultFrame2, textvariable=self.varPossible2)
         self.text_conseil_Chiffre1.pack(side="top")
         self.text_conseil_Chiffre2.pack(side="bottom")
         self.text_conseil_Addition1.pack(side="top")
         self.text_conseil_Addition2.pack(side="bottom")
+        self.text_conseil_Possible1.pack(side="top")
+        self.text_conseil_Possible2.pack(side="bottom")
 
     def bind_keys(self):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
@@ -195,23 +201,33 @@ class GridVC(tk.Frame):
     def test(self, x, y):  # cliquer sur la case vide
         x, y = x // self.cellSize, y // self.cellSize
 
-        cptx = 0  # compteur des cases suivantes horizontaux
-        cpty = 0  # compteur des cases suivantes varticaux
-        lst = []  # pour sauvgarder les chiffre initiaux
+        cptx = 0  # compteur des cases suivantes horizontales
+        cpty = 0  # compteur des cases suivantes varticales
+        lst = []  # pour sauvgarder les chiffres initiaux
+        sommeh = 0  # pour sauvgarder la somme des chiffres des cases dans la même ligne
+        cptsh = 0  # pour sauvgarder le nombre des cases déjà remplies dans la même ligne
+        sommev = 0  # pour sauvgarder la somme des chiffres des cases dans la même colonne
+        cptsv = 0  # pour sauvgarder le nombre des cases déjà remplies dans la même colonne
 
-        for i in range(x, -1, -1):  # pour détecter les cases vides à droite
+        for i in range(x, -1, -1):  # pour détecter les cases vides à gauche
             if self.modelGrid.getCell(i, y).value == -1:
                 if self.modelGrid.getCell(i, y).sumRight > 0:
                     lst.append(self.modelGrid.getCell(i, y).sumRight)
                     break
             else:
                 cptx += 1
+                if self.modelGrid.getCell(i, y).value > 0:
+                    sommeh = sommeh + self.modelGrid.getCell(i, y).value
+                    cptsh = cptsh + 1
 
-        for i in range(x + 1, self.modelGrid.width):  # pour détecter les cases vides à gauche
+        for i in range(x + 1, self.modelGrid.width):  # pour détecter les cases vides à droite
             if self.modelGrid.getCell(i, y).value == -1:
                 break
             else:
                 cptx += 1
+                if self.modelGrid.getCell(i, y).value > 0:
+                    sommeh = sommeh + self.modelGrid.getCell(i, y).value
+                    cptsh = cptsh + 1
 
         for i in range(y, -1, -1):  # pour détecter les cases vides en haut
             if self.modelGrid.getCell(x, i).value == -1:
@@ -220,24 +236,49 @@ class GridVC(tk.Frame):
                     break
             else:
                 cpty += 1
+                if self.modelGrid.getCell(x, i).value > 0:
+                    sommev = sommev + self.modelGrid.getCell(x, i).value
+                    cptsv = cptsv + 1
 
         for i in range(y + 1, self.modelGrid.height):  # pour détecter les cases vides en bas
             if self.modelGrid.getCell(x, i).value == -1:
                 break
             else:
                 cpty += 1
+                if self.modelGrid.getCell(x, i).value > 0:
+                    sommev = sommev + self.modelGrid.getCell(x, i).value
+                    cptsv = cptsv + 1
 
         if self.helpCombination == True:
             self.varChiffre1.set("Possibilities for : {}".format(lst[0]))
             self.varChiffre2.set("Possibilities for : {}".format(lst[1]))
             self.varAddition1.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[0]][cptx]))
             self.varAddition2.set(self.formattingResultsHelpCombination(creer_dictionnaire()[lst[1]][cpty]))
+            if lst[0] - sommeh != 0 and lst[1] - sommev != 0 and self.modelGrid.getCell(x, y).value == 0:
+                try:
+                    print("horizontal")
+                    print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
+                    self.varPossible1.set("Possible values for this empty cell in this line : {}".format(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]))
+
+                except:
+                    print("il y a des erreurs dans cette ligne")
+                    self.varPossible1.set("il y a des erreurs dans cette ligne")
+                try:
+                    print("vertical")
+                    print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
+                    self.varPossible2.set("Possible values for this empty cell in this column : {}".format(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]))
+                except:
+                    print("il y a des erreurs dans cette colonne")
+                    self.varPossible2.set("il y a des erreurs dans cette colonne")
 
         else:
             self.varChiffre1.set("")
             self.varChiffre2.set("")
             self.varAddition1.set("")
             self.varAddition2.set("")
+            self.varPossible1.set("")
+            self.varPossible2.set("")
+
 
 
     def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
