@@ -73,7 +73,7 @@ class MainWindow(tk.Frame):
 
     def HelpHeatmap(self):
         if(self.gridVC != None):
-            self.gridVC.heatmap = self.state2.get()
+            self.gridVC.helpHeatmap = self.state2.get()
             self.gridVC.reDrawGrid()
 
     def HelpMemo(self):
