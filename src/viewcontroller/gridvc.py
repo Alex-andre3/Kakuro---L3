@@ -1,5 +1,4 @@
 import tkinter as tk
-import tkinter.font
 
 from model.grid import *
 from events.event import *
@@ -17,14 +16,12 @@ class GridVC(tk.Frame):
         self.combinationPossible = creer_dictionnaire()
         self.cellSize = 30
         self.helpCombination = False
-        self.heatmap = False
+        self.helpHeatmap = False
         self.helpMemo = False
         self.helpResultFrame1 = parent.helpResultFrame1
         self.helpResultFrame2 = parent.helpResultFrame2
         self.currentSelectedCell = None
         self.drawGrid()
-
-
 
         self.scroll_x = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
         self.scroll_x.pack(side="bottom", fill="x")
@@ -58,6 +55,11 @@ class GridVC(tk.Frame):
         self.text_conseil_Possible1.pack(side="top")
         self.text_conseil_Possible2.pack(side="bottom")
 
+
+
+
+    #Fonctions gérant l'affichage et l'interactivité de l'interface de jeu
+
     def bind_keys(self):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
         self._root().bind('<KeyPress>', lambda event: self.setNumber(event))
@@ -70,7 +72,6 @@ class GridVC(tk.Frame):
         # self.winfo_pointerxy()
 
     def drawGrid(self):
-
         w = self.modelGrid.width
         h = self.modelGrid.height
         for y in range(h + 1):
@@ -81,15 +82,15 @@ class GridVC(tk.Frame):
             for x in range(w):
                 cell = self.modelGrid.getCell(x, y)
 
-                if (cell.value < 0):
-                    if (cell.sumDown <= 0 and cell.sumRight <= 0):
+                if cell.value < 0:
+                    if cell.sumDown <= 0 and cell.sumRight <= 0:
                         self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                      (y + 1) * self.cellSize, fill="black")
                     else:
-                        if (cell.sumDown > 0 and cell.sumRight > 0):
+                        if cell.sumDown > 0 and cell.sumRight > 0:
                             self.canvas.create_line(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                     (y + 1) * self.cellSize)
-                        if (cell.sumDown <= 0):
+                        if cell.sumDown <= 0:
                             self.canvas.create_polygon([(x * self.cellSize, y * self.cellSize),
                                                         (x * self.cellSize, (y + 1) * self.cellSize),
                                                         ((x + 1) * self.cellSize, (y + 1) * self.cellSize)],
@@ -98,7 +99,7 @@ class GridVC(tk.Frame):
                             quarter = self.cellSize / 4
                             self.canvas.create_text(x * self.cellSize + quarter, (y + 1) * self.cellSize - quarter,
                                                     text=cell.sumDown, tags=(x, y, "down"))
-                        if (cell.sumRight <= 0):
+                        if cell.sumRight <= 0:
                             self.canvas.create_polygon([(x * self.cellSize, y * self.cellSize),
                                                         ((x + 1) * self.cellSize, y * self.cellSize),
                                                         ((x + 1) * self.cellSize, (y + 1) * self.cellSize)],
@@ -109,7 +110,7 @@ class GridVC(tk.Frame):
                             self.canvas.create_text((x + 1) * self.cellSize - quarter, y * self.cellSize + quarter,
                                                     text=cell.sumRight, tags=(x, y, "right"))
                 else:
-                    if(cell.value != 0):
+                    if cell.value != 0:
                         if self.currentSelectedCell is cell:
                             self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                          (y + 1) * self.cellSize, fill="yellow")
@@ -119,7 +120,7 @@ class GridVC(tk.Frame):
                         self.canvas.create_text(x * self.cellSize + half, y * self.cellSize + half,
                                                 tags=(x, y), font=("", 18), text=cell.value, activefill="red")
                     else:
-                        if(self.heatmap):
+                        if self.helpHeatmap:
                             self.canvas.create_rectangle(x * self.cellSize, y * self.cellSize, (x + 1) * self.cellSize,
                                                     (y + 1) * self.cellSize, fill=heatColors[self.getCellHeat(x, y)-1])
 
@@ -153,7 +154,7 @@ class GridVC(tk.Frame):
             # print("Valeur value: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).value)
             # print("Valeur sumDown: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumDown)
             # print("Valeur sumRight: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumRight)
-            self.test2(x, y)
+            self.algoHelperCominaison2(x, y)
             return self.modelGrid.getCell((x // self.cellSize), y // self.cellSize)
 
         except IndexError:
@@ -180,19 +181,17 @@ class GridVC(tk.Frame):
         yValueWithScrollBar = int(dim[3] * b + event.y)
 
         try:
-            if self.getCellWithCoords(xValueWithScrollBar,
-                                      yValueWithScrollBar).value is not None and self.getCellWithCoords(
-                xValueWithScrollBar,
-                yValueWithScrollBar).value != -1:
+            if self.getCellWithCoords(xValueWithScrollBar, yValueWithScrollBar).value is not None \
+                    and self.getCellWithCoords(xValueWithScrollBar, yValueWithScrollBar).value != -1:
                 self.theEvent.set_coord([xValueWithScrollBar, yValueWithScrollBar])
                 x, y = self.theEvent.get_coord()
                 self.SelectedCell(x, y)
                 self.reDrawGrid()
-                self.test(x, y)
+                self.algoHelperCominaison(x, y)
             #else:
                 #self.theEvent.set_coord2([xValueWithScrollBar, yValueWithScrollBar])
                 #x, y = self.theEvent.get_coord2()
-                #self.test2(x, y)
+                #self.algoHelperCominaison2(x, y)
 
 
         except AttributeError:
@@ -211,6 +210,11 @@ class GridVC(tk.Frame):
             # print("Erreur, il faut rentrer un chiffre.")
 
 
+
+
+
+    #Fonctions gérant l'aide à la résolution grâce aux combinaisons possibles de chaque cases
+
     def formattingResultsHelpCombination(self, liste):
         chn = ""
         for x in liste:
@@ -220,7 +224,7 @@ class GridVC(tk.Frame):
         chn += "\n"
         return chn
 
-    def test(self, x, y):  # cliquer sur la case vide
+    def algoHelperCominaison(self, x, y):  # cliquer sur la case vide
         x, y = x // self.cellSize, y // self.cellSize
 
         cptx = 0  # compteur des cases suivantes horizontales
@@ -280,7 +284,8 @@ class GridVC(tk.Frame):
                 try:
                     print("horizontal")
                     print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
-                    self.varPossible1.set("Possible values for this empty cell in this line : {}".format(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]))
+                    self.varPossible1.set("Possible values for this empty cell in this line : {}"
+                                          .format(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]))
 
                 except:
                     print("il y a des erreurs dans cette ligne")
@@ -288,7 +293,8 @@ class GridVC(tk.Frame):
                 try:
                     print("vertical")
                     print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
-                    self.varPossible2.set("Possible values for this empty cell in this column : {}".format(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]))
+                    self.varPossible2.set("Possible values for this empty cell in this column : {}"
+                                          .format(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]))
                 except:
                     print("il y a des erreurs dans cette colonne")
                     self.varPossible2.set("il y a des erreurs dans cette colonne")
@@ -302,8 +308,7 @@ class GridVC(tk.Frame):
             self.varPossible2.set("")
 
 
-
-    def test2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
+    def algoHelperCominaison2(self, x, y):  # cliquer sur la case avec un ou deux chiffres
 
         if self.helpCombination == True:
 
@@ -354,8 +359,14 @@ class GridVC(tk.Frame):
             self.varAddition1.set("")
             self.varAddition2.set("")
 
+
+
+
+
+    #Fonctions gérant l'aide à la résolution grâce à la heatmap
+
     def switchHeatMap(self):
-        self.heatmap = not self.heatmap
+        self.helpHeatmap = not self.helpHeatmap
         self.reDrawGrid()
 
     def getCellHeat(self, x, y):

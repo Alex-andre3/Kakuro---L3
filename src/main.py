@@ -3,6 +3,7 @@ import tkinter as tk
 from viewcontroller.mainwindow import *
 
 root = tk.Tk()
+root.geometry("500x400")
 app = MainWindow(master=root)
 
 app.mainloop()

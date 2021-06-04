@@ -1,6 +1,5 @@
 def creer_dictionnaire():
     d = {}
-    l = []
 
     for i in range(1, 2**9):
         addition = []
@@ -21,8 +20,6 @@ def creer_dictionnaire():
                     d[total_chiffres][nb_de_chiffres] = [addition]
             else:
                 d[total_chiffres] = {nb_de_chiffres: [addition]}
-                
-            #print(addition)
 
     return d
 
