@@ -371,6 +371,7 @@ class GridVC(tk.Frame):
                         for x in range(0, len(listetest2)):
                             if listetest2[x] not in listey:
                                 listefinale2.append(listetest2[x])
+                                
 
 
                         self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
