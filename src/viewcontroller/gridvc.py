@@ -235,6 +235,12 @@ class GridVC(tk.Frame):
         cptsh = 0  # pour sauvgarder le nombre des cases déjà remplies dans la même ligne
         sommev = 0  # pour sauvgarder la somme des chiffres des cases dans la même colonne
         cptsv = 0  # pour sauvgarder le nombre des cases déjà remplies dans la même colonne
+        registeredx = []  # pour sauvgarder le chiffre déjà saisi dans la case blanche
+        registeredy = []  # pour sauvgarder le chiffre déjà saisi dans la case blanche
+        listex = []
+        listey = []
+        listefinale1 = []
+        listefinale2 = []
 
         for i in range(x, -1, -1):  # pour détecter les cases vides à gauche
             if self.modelGrid.getCell(i, y).value == -1:
@@ -245,6 +251,7 @@ class GridVC(tk.Frame):
                 cptx += 1
                 if self.modelGrid.getCell(i, y).value > 0:
                     sommeh = sommeh + self.modelGrid.getCell(i, y).value
+                    registeredx.append(self.modelGrid.getCell(i, y).value)
                     cptsh = cptsh + 1
 
         for i in range(x + 1, self.modelGrid.width):  # pour détecter les cases vides à droite
@@ -254,6 +261,7 @@ class GridVC(tk.Frame):
                 cptx += 1
                 if self.modelGrid.getCell(i, y).value > 0:
                     sommeh = sommeh + self.modelGrid.getCell(i, y).value
+                    registeredx.append(self.modelGrid.getCell(i, y).value)
                     cptsh = cptsh + 1
 
         for i in range(y, -1, -1):  # pour détecter les cases vides en haut
@@ -265,6 +273,7 @@ class GridVC(tk.Frame):
                 cpty += 1
                 if self.modelGrid.getCell(x, i).value > 0:
                     sommev = sommev + self.modelGrid.getCell(x, i).value
+                    registeredy.append(self.modelGrid.getCell(x, i).value)
                     cptsv = cptsv + 1
 
         for i in range(y + 1, self.modelGrid.height):  # pour détecter les cases vides en bas
@@ -274,7 +283,10 @@ class GridVC(tk.Frame):
                 cpty += 1
                 if self.modelGrid.getCell(x, i).value > 0:
                     sommev = sommev + self.modelGrid.getCell(x, i).value
+                    registeredy.append(self.modelGrid.getCell(x, i).value)
                     cptsv = cptsv + 1
+
+
 
         if self.helpCombination == True:
             self.varChiffre1.set("Possibilities for : {}".format(lst[0]))
@@ -293,20 +305,74 @@ class GridVC(tk.Frame):
         if self.helpValue == True:
             if lst[0] - sommeh != 0 and lst[1] - sommev != 0 and self.modelGrid.getCell(x, y).value == 0:
                 try:
-                    print("horizontal")
-                    print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
-                    self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
-                                          .format("\n", self.formattingResultsHelpCombination(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])))
+                    if not registeredx:
+                        print("horizontal")
+                        print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
+                        self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
+                                              .format("\n", self.formattingResultsHelpCombination(
+                            creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])))
 
-                except:
+                    else:
+
+                        listetest=creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]
+                        listetesttest = creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]
+                        print("-----")
+                        print(registeredx)
+                        print(listetesttest)
+                        print("-----")
+                        for i in range(0, len(registeredx)):
+                            for j in range(0, len(listetest)):
+                                if registeredx[i] in listetest[j]:
+                                    listex.append(listetest[j])
+
+                        print("-----")
+                        print(listetest)
+                        print(listex)
+                        print("-----")
+
+                        for x in range(0, len(listetest)):
+                            if listetest[x] not in listex:
+                                listefinale1.append(listetest[x])
+
+
+                        self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
+                                              .format("\n", self.formattingResultsHelpCombination(listefinale1)))
+
+                except Exception as e:
+                    print('str(e):\t\t', str(e))
                     print("il y a des erreurs dans cette ligne")
                     self.varPossible1.set("il y a des erreurs dans cette ligne")
                 try:
-                    print("vertical")
-                    print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
-                    self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
-                                          .format("\n", self.formattingResultsHelpCombination(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])))
-                except:
+                    if not registeredy:
+                        print("vertical")
+                        print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
+                        self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
+                                              .format("\n", self.formattingResultsHelpCombination(
+                            creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])))
+                    else:
+                        listetest2 = creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]
+                        listetesttest2 = creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]
+                        print("-----")
+                        print(registeredy)
+                        print(listetesttest2)
+                        print("-----")
+                        for i in range(0, len(registeredy)):
+                            for j in range(0, len(listetest2)):
+                                if registeredy[i] in listetest2[j]:
+                                    listey.append(listetest2[j])
+
+                        for x in range(0, len(listetest2)):
+                            if listetest2[x] not in listey:
+                                listefinale2.append(listetest2[x])
+
+
+                        self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
+                                              .format("\n", self.formattingResultsHelpCombination(listefinale2)))
+
+
+
+                except Exception as e:
+                    print('str(e):\t\t', str(e))
                     print("il y a des erreurs dans cette colonne")
                     self.varPossible2.set("il y a des erreurs dans cette colonne")
         else:
