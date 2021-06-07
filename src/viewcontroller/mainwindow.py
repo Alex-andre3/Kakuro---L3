@@ -10,6 +10,7 @@ class MainWindow(tk.Frame):
         super().__init__(master)
         self.gridLoader = GridFactory()
         self.gridVC = None
+        self.gridName = None
         self.master = master
         self.pack()
         self.create_widgets()
@@ -40,12 +41,6 @@ class MainWindow(tk.Frame):
         self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False, relief="ridge", text="Activate possible combinations", command=self.helpToCombinationPossibilities)
         self.CheckButton1.pack(side="left")
 
-        self.state4 = tkinter.BooleanVar()
-        self.CheckButton4 = tk.Checkbutton(self.helpFrame, variable=self.state4, onvalue=True, offvalue=False,
-                                           relief="ridge", text="Activate possible values",
-                                           command=self.helpToValuesPossibilities)
-        self.CheckButton4.pack(side="left")
-
         self.state2 = tkinter.BooleanVar()
         self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
         self.CheckButton2.pack(side="right")
@@ -53,22 +48,24 @@ class MainWindow(tk.Frame):
         self.state3 = tkinter.BooleanVar()
         self.CheckButton3 = tk.Checkbutton(self.helpFrame, variable=self.state3, onvalue=True, offvalue=False,
                                            relief="ridge", text="Activate Memo", command=self.HelpMemo)
-        self.CheckButton3.pack(side="right")
+        self.CheckButton3.pack(side="bottom")
+
+        self.state4 = tkinter.BooleanVar()
+        self.CheckButton4 = tk.Checkbutton(self.helpFrame, variable=self.state4, onvalue=True, offvalue=False,
+                                           relief="ridge", text="Activate possible values",
+                                           command=self.helpToValuesPossibilities)
+        self.CheckButton4.pack(side="right")
 
         self.helpResultFrame = tk.Frame(self, bd=2)
-        #self.helpResultFrame.grid_propagate(0)
         self.helpResultFrame.pack(side="right")
 
         self.helpResultFrame1 = tk.Frame(self.helpResultFrame, bd=5)
-        #self.helpResultFrame1.grid_propagate(0)
         self.helpResultFrame1.pack(side="top")
 
         self.helpResultFrame2 = tk.Frame(self.helpResultFrame, bd=5)
-        #self.helpResultFrame2.grid_propagate(0)
         self.helpResultFrame2.pack(side="bottom")
 
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
-        # self.helpResultFrame2.grid_propagate(0)
         self.helpResultFrame3.pack(side="bottom")
 
 
@@ -106,7 +103,8 @@ class MainWindow(tk.Frame):
                 return
         gridName = filedialog.askopenfilename(parent=self)
         if(gridName != None):
-            print(gridName)
+            print("gridname =", gridName)
+            self.gridName = gridName
             self.gridVC = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
             self.gridVC.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
 
