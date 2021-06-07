@@ -1,8 +1,12 @@
+import time
+import datetime
 import tkinter as tk
 
 from model.grid import *
 from events.event import *
 from solver.script_dictionary import creer_dictionnaire
+from .timer import Timer
+
 
 heatColors = ["#BF0000", "#9E3900", "#9B7200", "#899900", "#519900",
             "#199900", "#00998E", "#006B99", "#003399"]
@@ -56,7 +60,22 @@ class GridVC(tk.Frame):
         self.text_conseil_Possible1.pack(side="top")
         self.text_conseil_Possible2.pack(side="bottom")
 
+        self.timer = Timer(self)
+        self.gridName = parent.gridName
 
+        # en attendant d'avoir fait la fonction qui vérifie si une partie à été remporté
+        self.setGameToLog()
+
+    def setGameToLog(self):
+        date = datetime.datetime.today().strftime('%Y-%m-%d')
+        heure = datetime.datetime.today().strftime('%H:%M:%S')
+        log_file = open("logs/log.txt", "a")
+        log_file.write("\nPartie jouée sur : {} en {} secondes le {} à {} ".format(self.splitGridName(self.gridName), self.timer.seconds, date, heure))
+        log_file.close()
+
+    def splitGridName(self, gridName):
+        tab = gridName.split("/")
+        return tab[-1]
 
 
     #Fonctions gérant l'affichage et l'interactivité de l'interface de jeu
@@ -64,13 +83,10 @@ class GridVC(tk.Frame):
     def bind_keys(self):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
         self._root().bind('<KeyPress>', lambda event: self.setNumber(event))
-        # print("binded")
-        # self.winfo_pointerxy()
 
     def unbind_keys(self):
         self.canvas.unbind('<Button-1>')
         self._root().unbind('<KeyPress>') #dangerous, destroys every other binding
-        # self.winfo_pointerxy()
 
     def drawGrid(self):
         w = self.modelGrid.width
@@ -189,11 +205,6 @@ class GridVC(tk.Frame):
                 self.SelectedCell(x, y)
                 self.reDrawGrid()
                 self.algoHelperCominaison(x, y)
-            #else:
-                #self.theEvent.set_coord2([xValueWithScrollBar, yValueWithScrollBar])
-                #x, y = self.theEvent.get_coord2()
-                #self.algoHelperCominaison2(x, y)
-
 
         except AttributeError:
             print("error")
@@ -209,10 +220,6 @@ class GridVC(tk.Frame):
         except ValueError:
             pass
             # print("Erreur, il faut rentrer un chiffre.")
-
-
-
-
 
     #Fonctions gérant l'aide à la résolution grâce aux combinaisons possibles de chaque cases
 
