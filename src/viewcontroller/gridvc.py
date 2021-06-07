@@ -244,9 +244,9 @@ class GridVC(tk.Frame):
         cptsv = 0  # pour sauvgarder le nombre des cases déjà remplies dans la même colonne
         registeredx = []  # pour sauvgarder le chiffre déjà saisi dans la case blanche
         registeredy = []  # pour sauvgarder le chiffre déjà saisi dans la case blanche
-        listex = []
-        listey = []
-        listefinale1 = []
+        listex = []  # pour sauvgarder les chiffres d'aide qui sont doublé avec les chiffres déjà saisi
+        listey = []  # pour sauvgarder les chiffres d'aide qui sont doublé avec les chiffres déjà saisi
+        listefinale1 = []  # le résultat
         listefinale2 = []
 
         for i in range(x, -1, -1):  # pour détecter les cases vides à gauche
@@ -339,7 +339,7 @@ class GridVC(tk.Frame):
 
                         for x in range(0, len(listetest)):
                             if listetest[x] not in listex:
-                                listefinale1.append(listetest[x])
+                                listefinale1.append(listetest[x])  #  complémentaire
 
 
                         self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
@@ -370,8 +370,8 @@ class GridVC(tk.Frame):
 
                         for x in range(0, len(listetest2)):
                             if listetest2[x] not in listey:
-                                listefinale2.append(listetest2[x])
-                                
+                                listefinale2.append(listetest2[x])  #  complémentaire
+
 
 
                         self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
