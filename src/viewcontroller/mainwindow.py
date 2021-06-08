@@ -19,8 +19,6 @@ class MainWindow(tk.Frame):
     def create_widgets(self):
         buttons = tk.Frame(self)
 
-        # Boutons en haut
-
         self.loadCustomGridButton = tk.Button(buttons, text="Load a custom grid", command=self.loadCustomGrid)
         self.loadCustomGridButton.pack(side="left")
 
@@ -29,34 +27,58 @@ class MainWindow(tk.Frame):
 
         buttons.pack(side="top")
 
+        # Boutons en haut
+
+        gameOption = tk.Frame(self)
+
+        self.helpHint = tk.Button(gameOption, text="Get a hint", command=self.helpHint)
+        self.helpHint.pack(side="left")
+
+        self.checkGrid = tk.Button(gameOption, text="Check grid", fg="green",
+                                   command=self.checkGrid)
+        self.checkGrid.pack(side="right")
+
+        gameOption.pack(side="top")
+
+
         # Boutons en bas : aide à la résolution
 
-        self.helpFrame = tk.Frame(self, bg="#b8b2a7", bd=5)
-        self.helpFrame.pack(side="bottom")
+        helpFrame = tk.Frame(self, bg="#b8b2a7", bd=5)
 
-        self.text = tk.Message(self.helpFrame, text="To Help you", width=300, bg="#b8b2a7").pack(side="top")
+        HelpFrameLeft = tk.Frame(helpFrame, bg="#b8b2a7")
+        HelpFrameRight = tk.Frame(helpFrame, bg="#b8b2a7")
+
+        self.text = tk.Message(helpFrame, text="To Help you", width=300, bg="#b8b2a7").pack(side="top")
 
         self.state = tkinter.BooleanVar()
-        self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False,
+        self.CheckButton1 = tk.Checkbutton(HelpFrameLeft, variable=self.state, onvalue=True, offvalue=False,
                                            relief="ridge", text="Activate possible combinations",
                                            command=self.helpToCombinationPossibilities)
-        self.CheckButton1.pack(side="left")
+        self.CheckButton1.pack(side="top")
 
         self.state2 = tkinter.BooleanVar()
-        self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False,
+        self.CheckButton2 = tk.Checkbutton(HelpFrameLeft, variable=self.state2, onvalue=True, offvalue=False,
                                            relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
-        self.CheckButton2.pack(side="right")
+        self.CheckButton2.pack(side="bottom")
 
         self.state3 = tkinter.BooleanVar()
-        self.CheckButton3 = tk.Checkbutton(self.helpFrame, variable=self.state3, onvalue=True, offvalue=False,
+        self.CheckButton3 = tk.Checkbutton(HelpFrameRight, variable=self.state3, onvalue=True, offvalue=False,
                                            relief="ridge", text="Activate Memo", command=self.HelpMemo)
         self.CheckButton3.pack(side="bottom")
 
         self.state4 = tkinter.BooleanVar()
-        self.CheckButton4 = tk.Checkbutton(self.helpFrame, variable=self.state4, onvalue=True, offvalue=False,
+        self.CheckButton4 = tk.Checkbutton(HelpFrameRight, variable=self.state4, onvalue=True, offvalue=False,
                                            relief="ridge", text="Activate possible values",
                                            command=self.helpToValuesPossibilities)
-        self.CheckButton4.pack(side="right")
+        self.CheckButton4.pack(side="top")
+
+        HelpFrameLeft.pack(side="left")
+        HelpFrameRight.pack(side="right")
+        helpFrame.pack(side="bottom")
+
+
+
+        # est utile pour GridVC
 
         self.helpResultFrame = tk.Frame(self, bd=2)
         self.helpResultFrame.pack(side="right")
@@ -69,16 +91,6 @@ class MainWindow(tk.Frame):
 
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
         self.helpResultFrame3.pack(side="bottom")
-
-        self.helpHint = tk.Button(buttons, text="Get a hint", command=self.helpHint)
-        self.helpHint.pack(side="bottom")
-
-        self.checkGrid = tk.Button(buttons, text="Check grid", fg="green",
-                              command=self.checkGrid)
-        self.checkGrid.pack(side="bottom")
-
-
-
 
 
     #  Fonctions liées aux boutons
@@ -104,6 +116,7 @@ class MainWindow(tk.Frame):
     def checkGrid(self):
         if self.gridVC is not None:
             if self.gridVC.modelGrid.verifyGrid():
+                self.gridVC.setGameToLog(self.gridName)
                 print("Gagné!")
             else:
                 print("Grille non totalement remplie ou incorrecte.")
@@ -145,15 +158,3 @@ class MainWindow(tk.Frame):
     def switchHeatMap(self):
         if(self.gridVC != None):
             self.gridVC.switchHeatMap()
-
-
-    # def reloadGrid(self):
-
-    #     self.gridVC.reDrawGrid()
-    #     self.gridVC.pack(side="bottom")
-
-    # def ColorSelectedCell(self, x, y):
-
-    #     self.gridVC.SelectedCell(x, y)
-    # def loadGrid(self):
-    #     pass

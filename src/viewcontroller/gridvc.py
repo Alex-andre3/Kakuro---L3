@@ -59,16 +59,15 @@ class GridVC(tk.Frame):
         self.text_conseil_Possible2.pack(side="bottom")
 
         self.timer = Timer(self)
-        self.gridName = parent.gridName
 
-        # en attendant d'avoir fait la fonction qui vérifie si une partie à été remporté
-        self.setGameToLog()
+        # --- Permet de remplir le fichier .txt contenant les logs
 
-    def setGameToLog(self):
+    def setGameToLog(self, gridName):
         date = datetime.datetime.today().strftime('%Y-%m-%d')
         heure = datetime.datetime.today().strftime('%H:%M:%S')
         log_file = open("logs/log.txt", "a")
-        log_file.write("\nPartie jouée sur : {} en {} secondes le {} à {} ".format(self.splitGridName(self.gridName), self.timer.seconds, date, heure))
+        log_file.write("\nPartie jouée sur : {} en {} secondes le {} à {} ".format(self.splitGridName(gridName),
+                                                                                   self.timer.seconds, date, heure))
         log_file.close()
 
     def splitGridName(self, gridName):
@@ -82,9 +81,6 @@ class GridVC(tk.Frame):
         self.canvas.bind('<Button-1>', lambda event: self.saveCoordonate(event))
         self._root().bind('<KeyPress>', lambda event: self.setNumber(event))
 
-    def unbind_keys(self):
-        self.canvas.unbind('<Button-1>')
-        self._root().unbind('<KeyPress>') #dangerous, destroys every other binding
 
     def drawGrid(self):
         w = self.modelGrid.width
@@ -170,9 +166,6 @@ class GridVC(tk.Frame):
 
     def getCellWithCoords(self, x, y):
         try:
-            # print("Valeur value: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).value)
-            # print("Valeur sumDown: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumDown)
-            # print("Valeur sumRight: ", self.modelGrid.getCell((x // self.cellSize), y // self.cellSize).sumRight)
             self.algoHelperCominaison2(x, y)
             return self.modelGrid.getCell((x // self.cellSize), y // self.cellSize)
 
@@ -209,7 +202,7 @@ class GridVC(tk.Frame):
                 self.algoHelperCominaison(x, y)
 
         except AttributeError:
-            print("error")
+            print("Un clic en dehors de la grille vient d'être détecté !")
 
     def setNumber(self, event):
         # print("set")
@@ -221,7 +214,7 @@ class GridVC(tk.Frame):
 
         except ValueError:
             pass
-            # print("Erreur, il faut rentrer un chiffre.")
+
 
     #Fonctions gérant l'aide à la résolution grâce aux combinaisons possibles de chaque cases
 
@@ -315,29 +308,18 @@ class GridVC(tk.Frame):
             if lst[0] - sommeh != 0 and lst[1] - sommev != 0 and self.modelGrid.getCell(x, y).value == 0:
                 try:
                     if not registeredx:
-                        print("horizontal")
-                        print(creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])
                         self.varPossible1.set("Possible values for this empty cell in this line : {} {}"
                                               .format("\n", self.formattingResultsHelpCombination(
                             creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh])))
 
                     else:
-
                         listetest=creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]
                         listetesttest = creer_dictionnaire()[lst[0] - sommeh][cptx - cptsh]
-                        print("-----")
-                        print(registeredx)
-                        print(listetesttest)
-                        print("-----")
+
                         for i in range(0, len(registeredx)):
                             for j in range(0, len(listetest)):
                                 if registeredx[i] in listetest[j]:
                                     listex.append(listetest[j])
-
-                        print("-----")
-                        print(listetest)
-                        print(listex)
-                        print("-----")
 
                         for x in range(0, len(listetest)):
                             if listetest[x] not in listex:
@@ -348,23 +330,16 @@ class GridVC(tk.Frame):
                                               .format("\n", self.formattingResultsHelpCombination(listefinale1)))
 
                 except Exception as e:
-                    print('str(e):\t\t', str(e))
-                    print("il y a des erreurs dans cette ligne")
                     self.varPossible1.set("il y a des erreurs dans cette ligne")
                 try:
                     if not registeredy:
-                        print("vertical")
-                        print(creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])
                         self.varPossible2.set("Possible values for this empty cell in this column : {} {}"
                                               .format("\n", self.formattingResultsHelpCombination(
                             creer_dictionnaire()[lst[1] - sommev][cpty - cptsv])))
                     else:
                         listetest2 = creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]
                         listetesttest2 = creer_dictionnaire()[lst[1] - sommev][cpty - cptsv]
-                        print("-----")
-                        print(registeredy)
-                        print(listetesttest2)
-                        print("-----")
+
                         for i in range(0, len(registeredy)):
                             for j in range(0, len(listetest2)):
                                 if registeredy[i] in listetest2[j]:
@@ -382,8 +357,6 @@ class GridVC(tk.Frame):
 
 
                 except Exception as e:
-                    print('str(e):\t\t', str(e))
-                    print("il y a des erreurs dans cette colonne")
                     self.varPossible2.set("il y a des erreurs dans cette colonne")
         else:
             self.varPossible1.set("")
