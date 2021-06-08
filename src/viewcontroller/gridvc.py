@@ -151,9 +151,13 @@ class GridVC(tk.Frame):
                             number = 1
                             for booleanValue in cell.memoList:
                                 if booleanValue:
+                                    if self.helpHeatmap:
+                                        color = "black"
+                                    else:
+                                        color = "blue"
                                     self.canvas.create_text(x * self.cellSize + third * ((number-1) % 3 + 0.5),
                                                             y * self.cellSize + third * ((number-1) // 3 + 0.5),
-                                                            text=number, fill="gray")
+                                                            text=number, fill=color)
                                 number += 1
 
     def reDrawGrid(self):

@@ -18,31 +18,32 @@ class MainWindow(tk.Frame):
     def create_widgets(self):
         buttons = tk.Frame(self)
 
-        self.loadCustomGridButton = tk.Button(buttons, text="Load a custom grid",
-                                        command=self.loadCustomGrid)
+        # Boutons en haut
+
+        self.loadCustomGridButton = tk.Button(buttons, text="Load a custom grid", command=self.loadCustomGrid)
         self.loadCustomGridButton.pack(side="left")
 
-        # self.loadGridButton = tk.Button(self, text="Load a grid",
-        #                                 command=self.loadGrid)
-        # self.loadGridButton.pack(side="top")
-
-        self.quit = tk.Button(buttons, text="QUIT", fg="red", 
-                                        command=self.master.destroy)
+        self.quit = tk.Button(buttons, text="QUIT", fg="red", command=self.master.destroy)
         self.quit.pack(side="right")
 
         buttons.pack(side="top")
 
+        # Boutons en bas : aide à la résolution
+
         self.helpFrame = tk.Frame(self, bg="#b8b2a7", bd=5)
         self.helpFrame.pack(side="bottom")
 
-        self.text = tk.Message(self.helpFrame, text="To Help you", width=200, bg="#b8b2a7").pack(side="top")
+        self.text = tk.Message(self.helpFrame, text="To Help you", width=300, bg="#b8b2a7").pack(side="top")
 
         self.state = tkinter.BooleanVar()
-        self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False, relief="ridge", text="Activate possible combinations", command=self.helpToCombinationPossibilities)
+        self.CheckButton1 = tk.Checkbutton(self.helpFrame, variable=self.state, onvalue=True, offvalue=False,
+                                           relief="ridge", text="Activate possible combinations",
+                                           command=self.helpToCombinationPossibilities)
         self.CheckButton1.pack(side="left")
 
         self.state2 = tkinter.BooleanVar()
-        self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False, relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
+        self.CheckButton2 = tk.Checkbutton(self.helpFrame, variable=self.state2, onvalue=True, offvalue=False,
+                                           relief="ridge", text="Activate Heatmap", command=self.HelpHeatmap)
         self.CheckButton2.pack(side="right")
 
         self.state3 = tkinter.BooleanVar()
@@ -67,6 +68,13 @@ class MainWindow(tk.Frame):
 
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
         self.helpResultFrame3.pack(side="bottom")
+
+        self.helpHint = tk.Button(buttons, text="Get a hint", command=self.loadCustomGrid)
+        self.helpHint.pack(side="bottom")
+
+        self.checkGrid = tk.Button(buttons, text="Check grid", fg="green",
+                              command=self.master.destroy)
+        self.checkGrid.pack(side="bottom")
 
 
 
