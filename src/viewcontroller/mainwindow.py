@@ -1,5 +1,6 @@
 import tkinter
 import tkinter as tk
+import os
 from tkinter import filedialog, messagebox
 
 from model.gridfactory import *
@@ -9,6 +10,7 @@ class MainWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
         self.gridLoader = GridFactory()
+        self.gridSolution = None
         self.gridVC = None
         self.gridName = None
         self.master = master
@@ -69,13 +71,12 @@ class MainWindow(tk.Frame):
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
         self.helpResultFrame3.pack(side="bottom")
 
-        self.helpHint = tk.Button(buttons, text="Get a hint", command=self.loadCustomGrid)
+        self.helpHint = tk.Button(buttons, text="Get a hint", command=self.helpHint)
         self.helpHint.pack(side="bottom")
 
         self.checkGrid = tk.Button(buttons, text="Check grid", fg="green",
-                              command=self.master.destroy)
+                              command=self.checkGrid)
         self.checkGrid.pack(side="bottom")
-
 
 
     def helpToCombinationPossibilities(self):
@@ -96,6 +97,24 @@ class MainWindow(tk.Frame):
             self.gridVC.helpMemo = self.state3.get()
             self.gridVC.reDrawGrid()
 
+    def checkGrid(self):
+        if self.gridVC is not None:
+            if self.gridVC.modelGrid.verifyGrid():
+                print("Gagné!")
+            else:
+                print("Grille non totalement remplie ou incorrecte.")
+
+    def helpHint(self):
+        if self.gridVC is not None:
+            if self.gridSolution is not None:
+                grid = self.gridVC.modelGrid
+                result = grid.addOneValueFromSolution(self.gridSolution)
+                if result is None:
+                    print("Pas de fichier de solution présent.")
+                self.gridVC.reDrawGrid()
+            else:
+                print("Pas de fichier de solution présent.")
+
     def clearHelpResultFrame1(self):
         for widget in self.helpResultFrame1.winfo_children():
             widget.destroy()
@@ -113,8 +132,13 @@ class MainWindow(tk.Frame):
         if(gridName != None):
             print("gridname =", gridName)
             self.gridName = gridName
-            self.gridVC = GridVC(self.gridLoader.loadGrid(gridName), self) # creating the view of the returned grid
+            self.gridVC = GridVC(self.gridLoader.loadGrid(self.gridName), self) # creating the view of the returned grid
             self.gridVC.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
+            sName = gridName.replace("grids", "solutions")
+            if os.path.exists(sName):
+                self.gridSolution = GridFactory().loadGrid(sName)
+
+
 
     def switchHeatMap(self):
         if(self.gridVC != None):

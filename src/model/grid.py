@@ -1,4 +1,5 @@
 import model.cell
+import random
 
 class Grid:
     def __init__(self, grid=[]):
@@ -35,6 +36,7 @@ class Grid:
             sumRight = 0
             numbersRight = []
             i = x+1
+            invertY = self.height - y - 1
             while(i < self.width and self.getCell(i, invertY).value >= 0 and
                 not (self.getCell(i, invertY).value in numbersRight)):
                 if(self.getCell(i, invertY).value == 0):
@@ -56,6 +58,28 @@ class Grid:
 
     def getCell(self, x, y):
         return self.grid[y][x]
+
+    def addOneValueFromSolution(self, grid_solution):
+        if grid_solution is None:
+            return None
+        if self.height != grid_solution.height or self.width != grid_solution.width:
+            return None
+        list_cells_to_change = []
+        for x in range(self.width):
+            for y in range(self.height):
+                cell1 = self.getCell(x, y)
+                cell2 = grid_solution.getCell(x, y)
+                if cell2.value > 0:
+                    if cell1.value > 0:
+                        if cell1.value != cell2.value:
+                            cell1.setValue(cell2.value)
+                            return False
+                    elif cell1.value == 0:
+                        list_cells_to_change.append([cell1, cell2])
+        if list_cells_to_change:
+            one_pair = random.choice(list_cells_to_change)
+            one_pair[0].setValue(one_pair[1].value)
+        return True
 
     # --- debugging ---
     # def displayGrid(self):
