@@ -16,7 +16,7 @@ class Grid:
 
     def checkDownSum(self, x, y):
         cell = self.getCell(x, y)
-        if cell.value < 0:
+        if cell.value > 0:
             sumDown = 0
             numbersDown = []
             i = y+1
@@ -29,10 +29,12 @@ class Grid:
                     numbersDown.append(self.getCell(x, i).value)
                     i += 1
             return sumDown == cell.sumDown
+        else:
+            return True
 
     def checkRightSum(self, x, y):
         cell = self.getCell(x, y)
-        if cell.value < 0:
+        if cell.value > 0:
             sumRight = 0
             numbersRight = []
             i = x+1
@@ -46,6 +48,8 @@ class Grid:
                     numbersRight.append(self.getCell(i, invertY).value)
                     i += 1
             return sumRight == cell.sumRight
+        else:
+            return True
 
     def verifyGrid(self):
         for y in range(self.height):
