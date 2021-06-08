@@ -1,11 +1,9 @@
-import time
 import datetime
 import tkinter as tk
 
-from model.grid import *
-from events.event import *
-from solver.script_dictionary import creer_dictionnaire
-from .timer import Timer
+from src.events.event import *
+from src.solver.script_dictionary import creer_dictionnaire
+from src.viewcontroller.timer import Timer
 
 
 heatColors = ["#BF0000", "#9E3900", "#9B7200", "#899900", "#519900",

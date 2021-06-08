@@ -1,10 +1,9 @@
 import tkinter
-import tkinter as tk
 import os
 from tkinter import filedialog, messagebox
 
-from model.gridfactory import *
-from viewcontroller.gridvc import *
+from src.model.gridfactory import *
+from src.viewcontroller.gridvc import *
 
 class MainWindow(tk.Frame):
     def __init__(self, master=None):
@@ -79,6 +78,11 @@ class MainWindow(tk.Frame):
         self.checkGrid.pack(side="bottom")
 
 
+
+
+
+    #  Fonctions liées aux boutons
+
     def helpToCombinationPossibilities(self):
         if(self.gridVC != None):
             self.gridVC.helpCombination = self.state.get()
@@ -137,8 +141,6 @@ class MainWindow(tk.Frame):
             sName = gridName.replace("grids", "solutions")
             if os.path.exists(sName):
                 self.gridSolution = GridFactory().loadGrid(sName)
-
-
 
     def switchHeatMap(self):
         if(self.gridVC != None):

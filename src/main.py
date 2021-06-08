@@ -1,5 +1,3 @@
-import tkinter as tk
-
 from viewcontroller.mainwindow import *
 
 root = tk.Tk()

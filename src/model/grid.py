@@ -1,4 +1,3 @@
-import model.cell
 import random
 
 class Grid:
@@ -38,14 +37,13 @@ class Grid:
             sumRight = 0
             numbersRight = []
             i = x+1
-            invertY = self.height - y - 1
-            while(i < self.width and self.getCell(i, invertY).value >= 0 and
-                not (self.getCell(i, invertY).value in numbersRight)):
-                if(self.getCell(i, invertY).value == 0):
+            while(i < self.width and self.getCell(i, y).value >= 0 and
+                not (self.getCell(i, y).value in numbersRight)):
+                if(self.getCell(i, y).value == 0):
                     return False
                 else:
-                    sumRight += self.getCell(i, invertY).value
-                    numbersRight.append(self.getCell(i, invertY).value)
+                    sumRight += self.getCell(i, y).value
+                    numbersRight.append(self.getCell(i, y).value)
                     i += 1
             return sumRight == cell.sumRight
         else:

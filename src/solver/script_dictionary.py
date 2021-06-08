@@ -23,5 +23,4 @@ def creer_dictionnaire():
 
     return d
 
-
-print(creer_dictionnaire()[5][1])
+# print(creer_dictionnaire()[5][1])
