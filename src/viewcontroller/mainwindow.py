@@ -14,6 +14,7 @@ class MainWindow(tk.Frame):
         self.gridVC = None
         self.gridName = None
         self.winState = False
+        self.textWin = tk.StringVar()
         self.master = master
         self.pack()
         self.create_widgets()
@@ -91,6 +92,10 @@ class MainWindow(tk.Frame):
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
         self.helpResultFrame3.pack(side="bottom")
 
+        # bouton pour le message de victoire
+        self.labelWin = tk.Label(self, textvariable=self.textWin, font="Arial 10", fg="green", width=10)
+        self.labelWin.pack()
+
     #  Fonctions liées aux boutons
 
     def helpToCombinationPossibilities(self):
@@ -132,8 +137,7 @@ class MainWindow(tk.Frame):
                 self.gridVC.setGameToLog(self.gridName)
                 self.gridVC.winState = True
                 self.winState = True
-                self.label = tk.Label(self, text="You won!", font="Arial 10", fg="green", width=10)
-                self.label.pack()
+                self.textWin.set("You won!")
 
     def clearHelpResultFrame1(self):
         for widget in self.helpResultFrame1.winfo_children():
@@ -159,3 +163,4 @@ class MainWindow(tk.Frame):
             if os.path.exists(sName):
                 self.gridSolution = GridFactory().loadGrid(sName)
             self.winState = False
+            self.textWin.set("")
