@@ -24,6 +24,7 @@ class GridVC(tk.Frame):
         self.helpResultFrame1 = parent.helpResultFrame1
         self.helpResultFrame2 = parent.helpResultFrame2
         self.currentSelectedCell = None
+        self.winState = False
         self.drawGrid()
 
         self.scroll_x = tk.Scrollbar(self, orient="horizontal", command=self.canvas.xview)
@@ -68,6 +69,7 @@ class GridVC(tk.Frame):
         log_file = open("logs/log.txt", "a")
         log_file.write("\nPartie jouée sur : {} en {} secondes le {} à {} ".format(self.splitGridName(gridName),
                                                                                    self.timer.seconds, date, heure))
+        self.timer.active = False
         log_file.close()
 
     def splitGridName(self, gridName):
@@ -156,8 +158,9 @@ class GridVC(tk.Frame):
 
     def reDrawGrid(self):
         # pour eviter d'interposer les chiffres, on nettoie le canvas et le redessine
-        self.canvas.delete("all")
-        self.drawGrid()
+        if self.winState is False:
+            self.canvas.delete("all")
+            self.drawGrid()
 
     def SelectedCell(self, xMouse, yMouse):
         x, y = xMouse // self.cellSize, yMouse // self.cellSize

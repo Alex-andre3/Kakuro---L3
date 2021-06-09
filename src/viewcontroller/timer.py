@@ -4,6 +4,8 @@ import tkinter as tk
 
 class Timer:
     def __init__(self, parent):
+        # active by default
+        self.active = True
         # variable storing time
         self.seconds = 0
         # label displaying time
@@ -14,9 +16,10 @@ class Timer:
 
     def refresh_label(self):
         """ refresh the content of the label every second """
-        # increment the time
-        self.seconds += 1
-        # display the new time
-        self.label.configure(text="%i s" % self.seconds)
-        # request tkinter to call self.refresh after 1s (the delay is given in ms)
-        self.label.after(1000, self.refresh_label)
+        if self.active:
+            # increment the time
+            self.seconds += 1
+            # display the new time
+            self.label.configure(text="%i s" % self.seconds)
+            # request tkinter to call self.refresh after 1s (the delay is given in ms)
+            self.label.after(1000, self.refresh_label)

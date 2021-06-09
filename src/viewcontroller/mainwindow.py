@@ -5,6 +5,7 @@ from tkinter import filedialog, messagebox
 from src.model.gridfactory import *
 from src.viewcontroller.gridvc import *
 
+
 class MainWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -12,6 +13,7 @@ class MainWindow(tk.Frame):
         self.gridSolution = None
         self.gridVC = None
         self.gridName = None
+        self.winState = False
         self.master = master
         self.pack()
         self.create_widgets()
@@ -39,7 +41,6 @@ class MainWindow(tk.Frame):
         self.checkGrid.pack(side="right")
 
         gameOption.pack(side="top")
-
 
         # Boutons en bas : aide à la résolution
 
@@ -76,8 +77,6 @@ class MainWindow(tk.Frame):
         HelpFrameRight.pack(side="right")
         helpFrame.pack(side="bottom")
 
-
-
         # est utile pour GridVC
 
         self.helpResultFrame = tk.Frame(self, bd=2)
@@ -92,37 +91,32 @@ class MainWindow(tk.Frame):
         self.helpResultFrame3 = tk.Frame(self.helpResultFrame, bd=5)
         self.helpResultFrame3.pack(side="bottom")
 
-
     #  Fonctions liées aux boutons
 
     def helpToCombinationPossibilities(self):
-        if(self.gridVC != None):
+        if self.gridVC is not None and self.winState is False:
             self.gridVC.helpCombination = self.state.get()
 
     def helpToValuesPossibilities(self):
-        if(self.gridVC != None):
+        if self.gridVC is not None and self.winState is False:
             self.gridVC.helpValue = self.state4.get()
 
     def HelpHeatmap(self):
-        if(self.gridVC != None):
+        if self.gridVC is not None and self.winState is False:
             self.gridVC.helpHeatmap = self.state2.get()
             self.gridVC.reDrawGrid()
 
+    def switchHeatMap(self):
+        if self.gridVC is not None:
+            self.gridVC.switchHeatMap()
+
     def HelpMemo(self):
-        if(self.gridVC != None):
+        if self.gridVC is not None and self.winState is False:
             self.gridVC.helpMemo = self.state3.get()
             self.gridVC.reDrawGrid()
 
-    def checkGrid(self):
-        if self.gridVC is not None:
-            if self.gridVC.modelGrid.verifyGrid():
-                self.gridVC.setGameToLog(self.gridName)
-                print("Gagné!")
-            else:
-                print("Grille non totalement remplie ou incorrecte.")
-
     def helpHint(self):
-        if self.gridVC is not None:
+        if self.gridVC is not None and self.winState is False:
             if self.gridSolution is not None:
                 grid = self.gridVC.modelGrid
                 result = grid.addOneValueFromSolution(self.gridSolution)
@@ -132,6 +126,15 @@ class MainWindow(tk.Frame):
             else:
                 print("Pas de fichier de solution présent.")
 
+    def checkGrid(self):
+        if self.gridVC is not None and self.winState is False:
+            if self.gridVC.modelGrid.verifyGrid():
+                self.gridVC.setGameToLog(self.gridName)
+                self.gridVC.winState = True
+                self.winState = True
+                self.label = tk.Label(self, text="You won!", font="Arial 10", fg="green", width=10)
+                self.label.pack()
+
     def clearHelpResultFrame1(self):
         for widget in self.helpResultFrame1.winfo_children():
             widget.destroy()
@@ -139,22 +142,20 @@ class MainWindow(tk.Frame):
             widget.destroy()
 
     def loadCustomGrid(self):
-        if(self.gridVC != None):
-            if(messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):
+        if (self.gridVC != None):
+            if (messagebox.askokcancel("Confirmation", "Delete your current game ? (\"ok\")", parent=self)):
                 self.clearHelpResultFrame1()
                 self.gridVC.destroy()
             else:
                 return
         gridName = filedialog.askopenfilename(parent=self)
-        if(gridName != None):
+        if (gridName != None):
             print("gridname =", gridName)
             self.gridName = gridName
-            self.gridVC = GridVC(self.gridLoader.loadGrid(self.gridName), self) # creating the view of the returned grid
+            self.gridVC = GridVC(self.gridLoader.loadGrid(self.gridName),
+                                 self)  # creating the view of the returned grid
             self.gridVC.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=tk.YES)
             sName = gridName.replace("grids", "solutions")
             if os.path.exists(sName):
                 self.gridSolution = GridFactory().loadGrid(sName)
-
-    def switchHeatMap(self):
-        if(self.gridVC != None):
-            self.gridVC.switchHeatMap()
+            self.winState = False
