@@ -1,7 +1,7 @@
 import os.path
 
-from src.model.cell import *
-from src.model.grid import *
+from model.cell import *
+from model.grid import *
 
 class GridFactory:
     def __init__(self):

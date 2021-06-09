@@ -2,8 +2,8 @@ import tkinter
 import os
 from tkinter import filedialog, messagebox
 
-from src.model.gridfactory import *
-from src.viewcontroller.gridvc import *
+from model.gridfactory import *
+from viewcontroller.gridvc import *
 
 
 class MainWindow(tk.Frame):
